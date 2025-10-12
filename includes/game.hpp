@@ -4,7 +4,6 @@
 #include "init.hpp"
 #include "events.hpp"
 
-int				vertex_input();
-unsigned int	vertex_shader();
-unsigned int	fragment_shader();
-int				use_program();
+int				vertex_input(t_triangle *t);
+int				shader_program(t_triangle *t);
+int				draw_triangle(t_triangle *t);

@@ -19,6 +19,10 @@ int	init_window(t_game *game)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	// For Apple machine
+	#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	#endif
 
 	// (if you want compatibility, you can skip the core profile hint)
 	game->window = glfwCreateWindow(game->width, game->height, game->title.c_str(), NULL, NULL);
@@ -46,23 +50,26 @@ int	init_events(t_game *game)
 	glfwSetKeyCallback(game->window, key_callback);
 	// glfwSetCursorPosCallback(game->window, mouse_callback);
 
-	vertex_input();
-	vertex_shader();
-	fragment_shader();
+	vertex_input(&game->t);
+	if (shader_program(&game->t) == EXIT_FAILURE)
+	{
+		glDeleteVertexArrays(1, &game->t.VAO);
+    	glDeleteBuffers(1, &game->t.VBO);
+		return (EXIT_FAILURE);
+	}
 	while (!glfwWindowShouldClose(game->window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 	
 		// (render stuff)
-		use_program();
+		draw_triangle(&game->t);
 
 		glfwSwapBuffers(game->window);
 		glfwPollEvents();
 	}
-	//TODO: Add a triangle struct
-	glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+	glDeleteVertexArrays(1, &game->t.VAO);
+    glDeleteBuffers(1, &game->t.VBO);
+    glDeleteProgram(game->t.shaderProgram);
 	return (EXIT_SUCCESS);
 }
 

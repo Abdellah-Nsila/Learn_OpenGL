@@ -22,38 +22,34 @@ const char	*fragmentShaderSource = "#version 330 core\n"
 	"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 	"} \n";
 
-// Creating memory on the GPU where we store the vertex data
-int	vertex_input()
-{
-	// A vertex array object (also known as VAO) bind/unbind VBO's
-	unsigned int	VAO;
-	// We manage this memory via so called vertex buffer objects (VBO)
-	// that can store a large number of vertices in the GPU's memory
-	unsigned int	VBO;
 
+
+// Creating memory on the GPU where we store the vertex data
+int	vertex_input(t_triangle *t)
+{
 	// Generate a VAO
-	glGenVertexArrays(1, &VAO);
+	glGenVertexArrays(1, &t->VAO);
 	// Generate a buffer has with the unique ID &VBO
-	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &t->VBO);
 	// Bind Vertex Array Object
-	glBindVertexArray(VAO);
+	glBindVertexArray(t->VAO);
 	// Bind the newly created buffer to the GL_ARRAY_BUFFER target
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, t->VBO);
 	// Copie the previously defined vertex data into the buffer's memory
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	// Tell OpenGL how it should interpret the vertex data (per vertex attribute)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	// Enable the vertex attribute with glEnableVertexAttribArray giving the vertex attribute location as its argument
 	glEnableVertexAttribArray(0);
-	// Unbind Vertex Array Object
-	glBindVertexArray(VAO);
+	// Unbind vertex array object and Vertex Array Object
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 	return (EXIT_SUCCESS);
 
 }
 
 unsigned int	vertex_shader()
 {
-	// ID for the shader object
 	unsigned int	vertexShader;
 	// Track compile status and logs
 	int 			success;
@@ -77,7 +73,6 @@ unsigned int	vertex_shader()
 
 unsigned int	fragment_shader()
 {
-	// ID for the shader object
 	unsigned int	fragmentShader;
 	// Track compile status and logs
 	int 			success;
@@ -99,53 +94,46 @@ unsigned int	fragment_shader()
 	return (fragmentShader);
 }
 
-unsigned int	shader_program()
+int	shader_program(t_triangle *t)
 {
-	// ID's references
-	unsigned int	vertexShader;
-	unsigned int	fragmentShader;
-	unsigned int	shaderProgram;
 	// Track compile status and logs
 	int 			success;
 	char			infoLog[512];
 
-	vertexShader = vertex_shader();
-	if (!vertexShader)
+	t->vertexShader = vertex_shader();
+	if (!t->vertexShader)
 		return (0);
-	fragmentShader = fragment_shader();
-	if (!fragmentShader)
+	t->fragmentShader = fragment_shader();
+	if (!t->fragmentShader)
 	{
-		glDeleteShader(vertexShader);
+		glDeleteShader(t->vertexShader);
 		return (0);
 	}
 	// Creates a program and returns the ID reference to the newly created program object
-	shaderProgram = glCreateProgram();
+	t->shaderProgram = glCreateProgram();
 	// We attach the shaders to the program and link the
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+	glAttachShader(t->shaderProgram, t->vertexShader);
+	glAttachShader(t->shaderProgram, t->fragmentShader);
+	glLinkProgram(t->shaderProgram);
 	// Delete the shader objects once we've linked them into the program object
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	glDeleteShader(t->vertexShader);
+	glDeleteShader(t->fragmentShader);
 	// Checking for compile-time errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	glGetProgramiv(t->shaderProgram, GL_LINK_STATUS, &success);
 	if(!success)
 	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		glGetProgramInfoLog(t->shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM:COMPILATION_FAILED\n" << infoLog << std::endl;
-		return (0);
+		return (EXIT_FAILURE);
 	}
-	return (shaderProgram);
+	return (EXIT_SUCCESS);
 }
 
-int	use_program()
+int	draw_triangle(t_triangle *t)
 {
-	// ID reference for shader program
-	unsigned int	shaderProgram;
-	
-	shaderProgram = shader_program();
 	// Every shader and rendering call after glUseProgram will now use this program object
-	glUseProgram(shaderProgram);
+	glUseProgram(t->shaderProgram);
+	glBindVertexArray(t->VAO);
 	// Draws primitives using the currently active shader, the previously defined vertex attribute configuration
 	// and with the VBO's vertex data (indirectly bound via the VAO)
 	glDrawArrays(GL_TRIANGLES, 0, 3);
