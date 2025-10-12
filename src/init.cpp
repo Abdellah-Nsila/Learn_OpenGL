@@ -46,14 +46,23 @@ int	init_events(t_game *game)
 	glfwSetKeyCallback(game->window, key_callback);
 	// glfwSetCursorPosCallback(game->window, mouse_callback);
 
-	while (!glfwWindowShouldClose(game->window)) {
+	vertex_input();
+	vertex_shader();
+	fragment_shader();
+	while (!glfwWindowShouldClose(game->window))
+	{
 		glClear(GL_COLOR_BUFFER_BIT);
+	
 		// (render stuff)
+		use_program();
 
 		glfwSwapBuffers(game->window);
 		glfwPollEvents();
-		// glfwSetKeyCallback(game->window, key_callback);
 	}
+	//TODO: Add a triangle struct
+	glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteProgram(shaderProgram);
 	return (EXIT_SUCCESS);
 }
 
