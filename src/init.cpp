@@ -1,5 +1,17 @@
 #include "game.hpp"
 
+float vertices1[] = {
+	-0.8f,  0.8f, 0.0f,  // top right
+	-0.8f, -0.2f, 0.0f,  // bottom right
+	-0.2f, -0.2f, 0.0f,  // bottom left
+};
+
+float vertices2[] = {
+	0.8f,  0.8f, 0.0f,  // top right
+	0.8f, -0.8f, 0.0f,  // bottom right
+	-0.8f, -0.8f, 0.0f,  // bottom left
+};
+
 int setup_setting(t_game *game)
 {
 	game->width = WIDTH;
@@ -50,11 +62,13 @@ int	init_events(t_game *game)
 	glfwSetKeyCallback(game->window, key_callback);
 	// glfwSetCursorPosCallback(game->window, mouse_callback);
 
-	vertex_input(&game->t);
-	if (shader_program(&game->t) == EXIT_FAILURE)
+	if (setup_shaders(&game->t[0], vertices1, sizeof(vertices1)) == EXIT_FAILURE)
 	{
-		glDeleteVertexArrays(1, &game->t.VAO);
-    	glDeleteBuffers(1, &game->t.VBO);
+		return (EXIT_FAILURE);
+	}
+	if (setup_shaders(&game->t[1], vertices2, sizeof(vertices2)) == EXIT_FAILURE)
+	{
+		clean_shaders(&game->t[0]);
 		return (EXIT_FAILURE);
 	}
 	while (!glfwWindowShouldClose(game->window))
@@ -62,14 +76,14 @@ int	init_events(t_game *game)
 		glClear(GL_COLOR_BUFFER_BIT);
 	
 		// (render stuff)
-		draw_triangle(&game->t);
+		draw_triangle(&game->t[0]);
+		draw_triangle(&game->t[1]);
 
 		glfwSwapBuffers(game->window);
 		glfwPollEvents();
 	}
-	glDeleteVertexArrays(1, &game->t.VAO);
-    glDeleteBuffers(1, &game->t.VBO);
-    glDeleteProgram(game->t.shaderProgram);
+	clean_shaders(&game->t[0]);
+	clean_shaders(&game->t[1]);
 	return (EXIT_SUCCESS);
 }
 

@@ -1,5 +1,18 @@
 #include "game.hpp"
 
+// 3D Vertices cordinations of triangle (x, y, z) 
+float vertices[] = {
+	0.5f,  0.5f, 0.0f,  // top right
+	0.5f, -0.5f, 0.0f,  // bottom right
+	-0.5f, -0.5f, 0.0f,  // bottom left
+	-0.5f,  0.5f, 0.0f   // top left 
+};
+
+unsigned int indices[] = {  // note that we start from 0!
+    0, 1, 3,   // first triangle
+    1, 2, 3    // second triangle
+}; 
+
 // The source code for the vertex shader written in GLSL (OpenGL Shading Language)
 const char	*vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
@@ -16,13 +29,15 @@ const char	*fragmentShaderSource = "#version 330 core\n"
 	"} \n";
 
 // Creating memory on the GPU where we store the vertex data
-int	vertex_input(t_triangle *t, float vertices[9], size_t size)
+int	vertex_input(t_triangle *t)
 {
 	//! Genrate
 	// Generate a VAO
 	glGenVertexArrays(1, &t->VAO);
 	// Generate a buffer has with the unique ID &VBO
 	glGenBuffers(1, &t->VBO);
+	// Generate a EBO
+	glGenBuffers(1, &t->EBO);
 
 	//! Bind VAO Vertex Array Object
 	glBindVertexArray(t->VAO);
@@ -31,7 +46,13 @@ int	vertex_input(t_triangle *t, float vertices[9], size_t size)
 	// Bind the newly created buffer to the GL_ARRAY_BUFFER target
 	glBindBuffer(GL_ARRAY_BUFFER, t->VBO);
 	// Copy the previously defined vertex data into the buffer's memory
-	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//! Bind and Copy into EBO
+	// Bind Element Buffer Object
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, t->EBO);
+	// Copy the indices into the buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
 
 	// Tell OpenGL how it should interpret the vertex data (per vertex attribute)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -126,10 +147,10 @@ int	shader_program(t_triangle *t)
 	return (EXIT_SUCCESS);
 }
 
-int	setup_shaders(t_triangle *t, float vertices[9], size_t size)
+int	setup_shaders(t_triangle *t)
 {
 
-	vertex_input(t, vertices, size);
+	vertex_input(t);
 	if (shader_program(t) == EXIT_FAILURE)
 	{
 		glDeleteVertexArrays(1, &t->VAO);
@@ -155,6 +176,6 @@ int	draw_triangle(t_triangle *t)
 	glBindVertexArray(t->VAO);
 	// Draws primitives using the currently active shader, the previously defined vertex attribute configuration
 	// and with the VBO's vertex data (indirectly bound via the VAO)
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	return (EXIT_SUCCESS);
 }
