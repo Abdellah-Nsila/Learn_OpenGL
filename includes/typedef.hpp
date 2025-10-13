@@ -1,6 +1,7 @@
 #pragma once
 
 #include "includes.hpp"
+#include "Shader.hpp"
 
 typedef struct s_triangle
 {
@@ -12,12 +13,12 @@ typedef struct s_triangle
 	// We manage this memory via so called vertex buffer objects (VBO)
 	// that can store a large number of vertices in the GPU's memory
 	unsigned int	VBO;
-	// ID reference for the vertex shader object
-	unsigned int	vertexShader;
-	// ID reference for the fragment shader object
-	unsigned int	fragmentShader;
+	// code file path to the vertex shader
+	char			*vertexPath;
+	// code file path to the fragment shader
+	char			*fragmentPath;
 	// ID reference for the shader program
-	unsigned int	shaderProgram;
+	Shader			*shader;
 }				t_triangle;
 
 typedef struct s_game

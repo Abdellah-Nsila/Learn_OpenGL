@@ -1,20 +1,5 @@
 #include "game.hpp"
 
-// The source code for the vertex shader written in GLSL (OpenGL Shading Language)
-const char	*vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-const char	*fragmentShaderSource = "#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"void main()\n"
-	"{\n"
-	"    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-	"} \n";
-
 // Creating memory on the GPU where we store the vertex data
 int	vertex_input(t_triangle *t, float vertices[9], size_t size)
 {
@@ -34,109 +19,15 @@ int	vertex_input(t_triangle *t, float vertices[9], size_t size)
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
 	// Tell OpenGL how it should interpret the vertex data (per vertex attribute)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	// Enable the vertex attribute with glEnableVertexAttribArray giving the vertex attribute location as its argument
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 
 	//! Unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	return (EXIT_SUCCESS);
-
-}
-
-unsigned int	vertex_shader()
-{
-	unsigned int	vertexShader;
-	// Track compile status and logs
-	int 			success;
-	char			infoLog[512];
-
-	// Create a shader object, again referenced by an ID
-	vertexShader =  glCreateShader(GL_VERTEX_SHADER);
-	// Attach the shader source code to the shader object and compile the shader
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-	// Checking for compile-time errors
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if(!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-		return (0);
-	}
-	return (vertexShader);
-}
-
-unsigned int	fragment_shader()
-{
-	unsigned int	fragmentShader;
-	// Track compile status and logs
-	int 			success;
-	char			infoLog[512];
-
-	// Create a shader object, again referenced by an ID
-	fragmentShader =  glCreateShader(GL_FRAGMENT_SHADER);
-	// Attach the shader source code to the shader object and compile the shader
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-	// Checking for compile-time errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if(!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-		return (0);
-	}
-	return (fragmentShader);
-}
-
-int	shader_program(t_triangle *t)
-{
-	// Track compile status and logs
-	int 			success;
-	char			infoLog[512];
-
-	t->vertexShader = vertex_shader();
-	if (!t->vertexShader)
-		return (0);
-	t->fragmentShader = fragment_shader();
-	if (!t->fragmentShader)
-	{
-		glDeleteShader(t->vertexShader);
-		return (0);
-	}
-	// Creates a program and returns the ID reference to the newly created program object
-	t->shaderProgram = glCreateProgram();
-	// We attach the shaders to the program and link the
-	glAttachShader(t->shaderProgram, t->vertexShader);
-	glAttachShader(t->shaderProgram, t->fragmentShader);
-	glLinkProgram(t->shaderProgram);
-	// Delete the shader objects once we've linked them into the program object
-	glDeleteShader(t->vertexShader);
-	glDeleteShader(t->fragmentShader);
-	// Checking for compile-time errors
-	glGetProgramiv(t->shaderProgram, GL_LINK_STATUS, &success);
-	if(!success)
-	{
-		glGetProgramInfoLog(t->shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM:COMPILATION_FAILED\n" << infoLog << std::endl;
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	setup_shaders(t_triangle *t, float vertices[9], size_t size)
-{
-
-	vertex_input(t, vertices, size);
-	if (shader_program(t) == EXIT_FAILURE)
-	{
-		glDeleteVertexArrays(1, &t->VAO);
-    	glDeleteBuffers(1, &t->VBO);
-		glDeleteBuffers(1, &t->EBO);
-		return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 
@@ -145,13 +36,14 @@ void	clean_shaders(t_triangle *t)
 	glDeleteVertexArrays(1, &t->VAO);
     glDeleteBuffers(1, &t->VBO);
     glDeleteBuffers(1, &t->EBO);
-    glDeleteProgram(t->shaderProgram);
+    glDeleteProgram(t->shader->ID);
 }
 
 int	draw_triangle(t_triangle *t)
 {
 	// Every shader and rendering call after glUseProgram will now use this program object
-	glUseProgram(t->shaderProgram);
+	t->shader->use();
+	// Bind VAO
 	glBindVertexArray(t->VAO);
 	// Draws primitives using the currently active shader, the previously defined vertex attribute configuration
 	// and with the VBO's vertex data (indirectly bound via the VAO)

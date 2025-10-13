@@ -1,5 +1,12 @@
 #include "game.hpp"
 
+float vertices[] = {
+    // positions         // colors
+     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+};
+
 float vertices1[] = {
 	-0.8f,  0.8f, 0.0f,  // top right
 	-0.8f, -0.2f, 0.0f,  // bottom right
@@ -52,7 +59,7 @@ int	init_window(t_game *game)
 	}
 
 	glViewport(0, 0, game->width, game->height);
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	return (EXIT_SUCCESS);
 }
 
@@ -62,28 +69,22 @@ int	init_events(t_game *game)
 	glfwSetKeyCallback(game->window, key_callback);
 	// glfwSetCursorPosCallback(game->window, mouse_callback);
 
-	if (setup_shaders(&game->t[0], vertices1, sizeof(vertices1)) == EXIT_FAILURE)
-	{
-		return (EXIT_FAILURE);
-	}
-	if (setup_shaders(&game->t[1], vertices2, sizeof(vertices2)) == EXIT_FAILURE)
-	{
-		clean_shaders(&game->t[0]);
-		return (EXIT_FAILURE);
-	}
+	vertex_input(&game->t[0], vertices, sizeof(vertices));
+	Shader *ourShader = new Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
+	game->t[0].shader = ourShader;
+
 	while (!glfwWindowShouldClose(game->window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 	
 		// (render stuff)
 		draw_triangle(&game->t[0]);
-		draw_triangle(&game->t[1]);
 
 		glfwSwapBuffers(game->window);
 		glfwPollEvents();
 	}
 	clean_shaders(&game->t[0]);
-	clean_shaders(&game->t[1]);
+	delete game->t[0].shader;
 	return (EXIT_SUCCESS);
 }
 

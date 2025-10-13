@@ -5,11 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+#include <cmath>
 
 #include "stdlib.h"
 #include "string.h"
-
-#include "typedef.hpp"
-#include "settings.hpp"
-
-

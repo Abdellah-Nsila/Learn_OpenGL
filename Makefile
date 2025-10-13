@@ -5,12 +5,15 @@
 NAME        = game
 GPP         = g++
 GPPFLAGS    = -Wall -Wextra -Werror -std=c++17
-INCLUDES    = -Iincludes
+INCLUDES    = -Iincludes -Iincludes/classes
 
 # --- sources ---
 INC_DIR 	= includes
 SRC_DIR     = src
-SRCS_CPP    = $(SRC_DIR)/main.cpp $(SRC_DIR)/init.cpp $(SRC_DIR)/events.cpp $(SRC_DIR)/helloTriangle.cpp
+CLASS_DIR	= $(SRC_DIR)/classes
+CLASS_SRC	= $(CLASS_DIR)/Shader.cpp
+SRCS_CPP    = $(SRC_DIR)/main.cpp $(SRC_DIR)/init.cpp $(SRC_DIR)/events.cpp $(SRC_DIR)/helloTriangle.cpp \
+			$(CLASS_SRC)
 SRCS_C      = $(SRC_DIR)/glad.c
 OBJS_CPP    = $(SRCS_CPP:.cpp=.o)
 OBJS_C      = $(SRCS_C:.c=.o)
