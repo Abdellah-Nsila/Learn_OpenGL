@@ -43,6 +43,9 @@ int	draw_triangle(t_triangle *t)
 {
 	// Every shader and rendering call after glUseProgram will now use this program object
 	t->shader->use();
+	// Update
+	t->shader->setFloat("xOffset", 0.3f);
+	glUseProgram(t->shader->ID);
 	// Bind VAO
 	glBindVertexArray(t->VAO);
 	// Draws primitives using the currently active shader, the previously defined vertex attribute configuration
