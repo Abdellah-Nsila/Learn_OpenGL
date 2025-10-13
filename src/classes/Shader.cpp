@@ -8,7 +8,7 @@ Shader::~Shader()
 {
 }
 
-int	Shader::checkCompileErrors(unsigned int shader, std::string type)
+int	Shader::checkCompileErrors(GLuint shader, std::string type)
 {
 	int success;
 	char infoLog[1024];
@@ -66,9 +66,9 @@ std::string	Shader::getShaderCode(int SHADER_TYPE, const char *path)
 		return (shaderStream.str());
 }
 
-unsigned int	Shader::compileShader(int SHADER_TYPE, const char* shaderCode)
+GLuint	Shader::compileShader(int SHADER_TYPE, const char* shaderCode)
 {
-	unsigned int	shaderID;
+	GLuint	shaderID;
 
 	// Create a ID object, again referenced by an ID
 	shaderID =  glCreateShader(SHADER_TYPE);
@@ -81,9 +81,9 @@ unsigned int	Shader::compileShader(int SHADER_TYPE, const char* shaderCode)
 	return (shaderID);
 }
 
-unsigned int	Shader::createShaderProgram(unsigned int vertexShader, unsigned int fragmentShader)
+GLuint	Shader::createShaderProgram(GLuint vertexShader, GLuint fragmentShader)
 {
-	unsigned int	shaderProgram;
+	GLuint	shaderProgram;
 
 	// Creates a program and returns the ID reference to the newly created program object
 	shaderProgram = glCreateProgram();
@@ -103,7 +103,7 @@ unsigned int	Shader::createShaderProgram(unsigned int vertexShader, unsigned int
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
 	std::string		vShaderCode, fShaderCode;
-	unsigned int	vertexShader, fragmentShader;
+	GLuint	vertexShader, fragmentShader;
 
 	// Get Souce code of Shaders using paths
 	vShaderCode = getShaderCode(GL_VERTEX_SHADER, vertexPath);
@@ -136,12 +136,12 @@ void	Shader::deleteProgram()
 	glDeleteProgram(ID);
 }
 
-void	Shader::setBool(const std::string &name, bool value) const
+void	Shader::setBool(const std::string &name, GLboolean value) const
 {         
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value); 
+    glUniform1i(glGetUniformLocation(ID, name.c_str()), (GLint)value); 
 }
 
-void	Shader::setInt(const std::string &name, int value) const
+void	Shader::setInt(const std::string &name, GLint value) const
 { 
     glUniform1i(glGetUniformLocation(ID, name.c_str()), value); 
 }

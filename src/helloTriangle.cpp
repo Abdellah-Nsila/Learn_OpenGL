@@ -21,14 +21,15 @@ GLfloat vertices2[] = {
 
 int	setupPipeline(t_triangle *t)
 {
+	t->vao.init();
 	t->vao.bind();
 	t->vbo.init(vertices, sizeof(vertices));
-	t->vao.LinkVBO(t->vbo, 0);
+	t->vao.LinkAttrib(t->vbo, 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	t->vao.LinkAttrib(t->vbo, 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	t->vao.unbind();
 	t->vbo.unbind();
 	return EXIT_SUCCESS;
 }
-
 
 void	destroyPipeline(t_triangle *t)
 {

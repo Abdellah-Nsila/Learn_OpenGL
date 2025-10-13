@@ -5,7 +5,7 @@
 class VBO
 {
 	public:
-		unsigned int	ID;
+		GLuint	ID;
 
 	public:
 		VBO();

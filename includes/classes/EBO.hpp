@@ -5,7 +5,7 @@
 class EBO
 {
 	public:
-		unsigned int	ID;
+		GLuint	ID;
 
 	public:
 		EBO();

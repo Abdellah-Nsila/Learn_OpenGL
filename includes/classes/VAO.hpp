@@ -6,12 +6,13 @@
 class VAO
 {
 	public:
-		unsigned int	ID;
+		GLuint	ID;
 
 	public:
 		VAO();
 		~VAO();
-		void	LinkVBO(VBO VBO, GLuint layout);
+		void	init();
+		void	LinkAttrib(VBO VBO, GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLvoid *pointer);
 		void	bind();
 		void	unbind();
 		void	deleteBuffer();

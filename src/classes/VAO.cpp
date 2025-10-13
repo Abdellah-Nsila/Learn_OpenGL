@@ -2,24 +2,25 @@
 
 VAO::VAO()
 {
-	// Generate a VAO
-	glGenVertexArrays(1, &ID);
 }
 
 VAO::~VAO()
 {
 }
 
-void	VAO::LinkVBO(VBO VBO, GLuint layout)
+void	VAO::init()
 {
-	(void)layout;
+	// Generate a VAO
+	glGenVertexArrays(1, &ID);
+}
+
+void	VAO::LinkAttrib(VBO VBO, GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLvoid *pointer)
+{
 	VBO.bind();
 	// Tell OpenGL how it should interpret the vertex data (per vertex attribute)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 	// Enable the vertex attribute with glEnableVertexAttribArray giving the vertex attribute location as its argument
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(index);
 	VBO.unbind();
 }
 
@@ -35,5 +36,6 @@ void	VAO::unbind()
 
 void	VAO::deleteBuffer()
 {
-	glDeleteVertexArrays(1, &ID);
+	if (ID)
+		glDeleteVertexArrays(1, &ID);
 }
