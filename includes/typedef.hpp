@@ -10,12 +10,12 @@ typedef struct s_triangle
 {
 	GLfloat			vertices[9];
 	// A vertex array object (also known as VAO) bind/unbind VBO's
-	unsigned int	VAO;
+	VAO	vao;
 	//  Element Buffer Objects, that use indexed drawing
-	unsigned int	EBO;
+	EBO	ebo;
 	// We manage this memory via so called vertex buffer objects (VBO)
 	// that can store a large number of vertices in the GPU's memory
-	unsigned int	VBO;
+	VBO	vbo;
 	// code file path to the vertex shader
 	char			*vertexPath;
 	// code file path to the fragment shader
@@ -30,6 +30,5 @@ typedef struct s_game
 	int					height;
 	GLFWwindow*			window;
 	std::string			title;
-	t_triangle			t[2];
 }				t_game;
 

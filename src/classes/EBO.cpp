@@ -8,7 +8,7 @@ EBO::~EBO()
 {
 }
 
-EBO::EBO(GLfloat *indices, GLsizeiptr size)
+void	EBO::init(GLfloat *indices, GLsizeiptr size)
 {
 	// Generate a EBO
 	glGenBuffers(1, &ID);

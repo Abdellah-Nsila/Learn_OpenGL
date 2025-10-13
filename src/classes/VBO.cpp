@@ -8,7 +8,7 @@ VBO::~VBO()
 {
 }
 
-VBO::VBO(GLfloat *vertices, GLsizeiptr size)
+void	VBO::init(GLfloat *vertices, GLsizeiptr size)
 {
 	// Generate a buffer has with the unique ID &VBO
 	glGenBuffers(1, &ID);
