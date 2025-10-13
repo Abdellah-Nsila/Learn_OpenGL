@@ -1,7 +1,7 @@
 #include "game.hpp"
 
 // 3D Vertices cordinations of triangle (x, y, z) 
-float vertices[] = {
+GLfloat vertices[] = {
 	0.5f,  0.5f, 0.0f,  // top right
 	0.5f, -0.5f, 0.0f,  // bottom right
 	-0.5f, -0.5f, 0.0f,  // bottom left
@@ -55,7 +55,7 @@ int	vertex_input(t_triangle *t)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
 
 	// Tell OpenGL how it should interpret the vertex data (per vertex attribute)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 	// Enable the vertex attribute with glEnableVertexAttribArray giving the vertex attribute location as its argument
 	glEnableVertexAttribArray(0);
 
@@ -83,7 +83,7 @@ unsigned int	vertex_shader()
 	if(!success)
 	{
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 		return (0);
 	}
 	return (vertexShader);
@@ -106,7 +106,7 @@ unsigned int	fragment_shader()
 	if(!success)
 	{
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+		std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 		return (0);
 	}
 	return (fragmentShader);
@@ -141,7 +141,7 @@ int	shader_program(t_triangle *t)
 	if(!success)
 	{
 		glGetProgramInfoLog(t->shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM:COMPILATION_FAILED\n" << infoLog << std::endl;
+		std::cerr << "ERROR::SHADER::PROGRAM:COMPILATION_FAILED\n" << infoLog << std::endl;
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

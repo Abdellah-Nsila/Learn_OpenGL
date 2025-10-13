@@ -11,7 +11,7 @@ INCLUDES    = -Iincludes -Iincludes/classes
 INC_DIR 	= includes
 SRC_DIR     = src
 CLASS_DIR	= $(SRC_DIR)/classes
-CLASS_SRC	= $(CLASS_DIR)/Shader.cpp
+CLASS_SRC	= $(CLASS_DIR)/Shader.cpp $(CLASS_DIR)/VAO.cpp $(CLASS_DIR)/VBO.cpp $(CLASS_DIR)/EBO.cpp
 SRCS_CPP    = $(SRC_DIR)/main.cpp $(SRC_DIR)/init.cpp $(SRC_DIR)/events.cpp $(SRC_DIR)/helloTriangle.cpp \
 			$(CLASS_SRC)
 SRCS_C      = $(SRC_DIR)/glad.c
@@ -32,8 +32,7 @@ $(NAME): $(OBJS)
 	$(GPP) $(GPPFLAGS) $(OBJS) -o $(NAME) $(LIBS)
 
 # Compile .cpp files
-%.o: %.cpp	$(INC_DIR)/game.hpp $(INC_DIR)/includes.hpp $(INC_DIR)/typedef.hpp $(INC_DIR)/settings.hpp $(INC_DIR)/init.hpp \
-			$(INC_DIR)/events.hpp
+%.o: %.cpp	$(INC_DIR)/* $(INC_DIR)/classes/*
 	$(GPP) $(GPPFLAGS) $(INCLUDES) -c $< -o $@
 
 # Compile .c files (for glad)

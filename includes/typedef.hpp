@@ -1,11 +1,14 @@
 #pragma once
 
 #include "includes.hpp"
+#include "VAO.hpp"
+#include "VBO.hpp"
+#include "EBO.hpp"
 #include "Shader.hpp"
 
 typedef struct s_triangle
 {
-	float			vertices[9];
+	GLfloat			vertices[9];
 	// A vertex array object (also known as VAO) bind/unbind VBO's
 	unsigned int	VAO;
 	//  Element Buffer Objects, that use indexed drawing

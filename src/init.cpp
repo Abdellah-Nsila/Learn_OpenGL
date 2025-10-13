@@ -1,19 +1,19 @@
 #include "game.hpp"
 
-float vertices[] = {
+GLfloat vertices[] = {
     // positions         // colors
-     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 };
 
-float vertices1[] = {
+GLfloat vertices1[] = {
 	-0.8f,  0.8f, 0.0f,  // top right
 	-0.8f, -0.2f, 0.0f,  // bottom right
 	-0.2f, -0.2f, 0.0f,  // bottom left
 };
 
-float vertices2[] = {
+GLfloat vertices2[] = {
 	0.8f,  0.8f, 0.0f,  // top right
 	0.8f, -0.8f, 0.0f,  // bottom right
 	-0.8f, -0.8f, 0.0f,  // bottom left

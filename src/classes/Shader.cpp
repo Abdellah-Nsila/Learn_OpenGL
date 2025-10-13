@@ -19,7 +19,7 @@ int	Shader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+			std::cerr << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 			return (EXIT_FAILURE);
 		}
 	}
@@ -29,7 +29,7 @@ int	Shader::checkCompileErrors(unsigned int shader, std::string type)
 		if (!success)
 		{
 			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+			std::cerr << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 			return (EXIT_FAILURE);
 		}
 	}
@@ -58,7 +58,7 @@ std::string	Shader::getShaderCode(int SHADER_TYPE, const char *path)
 	}
 	catch(const std::ifstream::failure& e)
 	{
-		std::cout << "ERROR::SHADER::"
+		std::cerr << "ERROR::SHADER::"
 		<< (SHADER_TYPE == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT")
 		<< "::FILE_NOT_SUCCESFULLY_READ::" << e.what() << std::endl;
 		return ("");
@@ -126,9 +126,14 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 		return ;
 }
 
-void	Shader::use() 
+void	Shader::useProgram() 
 { 
 	glUseProgram(ID);
+}
+
+void	Shader::deleteProgram() 
+{ 
+	glDeleteProgram(ID);
 }
 
 void	Shader::setBool(const std::string &name, bool value) const
@@ -141,7 +146,7 @@ void	Shader::setInt(const std::string &name, int value) const
     glUniform1i(glGetUniformLocation(ID, name.c_str()), value); 
 }
 
-void	Shader::setFloat(const std::string &name, float value) const
+void	Shader::setFloat(const std::string &name, GLfloat value) const
 { 
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
 }
