@@ -48,21 +48,7 @@ int	init_events(t_game *game)
 {
 	glfwSetKeyCallback(game->window, key_callback);
 	// glfwSetCursorPosCallback(game->window, mouse_callback);
-
-	Shader *ourShader = new Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
-	t_triangle	t;
-	setupPipeline(&t);
-	t.shader = ourShader;
-
-	while (!glfwWindowShouldClose(game->window))
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		drawTriangle(&t);
-		glfwSwapBuffers(game->window);
-		glfwPollEvents();
-	}
-	destroyPipeline(&t);
-	delete t.shader;
+	render(game);
 	return (EXIT_SUCCESS);
 }
 

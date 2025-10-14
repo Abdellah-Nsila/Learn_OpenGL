@@ -13,4 +13,5 @@
 // int				setup_shaders(t_triangle *t, GLfloat vertices[9], size_t size);
 int				setupPipeline(t_triangle *t);
 int				drawTriangle(t_triangle *t);
+int				render(t_game *game);
 void			destroyPipeline(t_triangle *t);
