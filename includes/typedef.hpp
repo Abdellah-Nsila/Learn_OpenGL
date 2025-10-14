@@ -24,7 +24,7 @@ typedef struct s_triangle
 	// ID reference for the shader program
 	Shader			*shader;
 	// ID reference for the texture program
-	Texture			texture;
+	Texture			texture[2];
 }				t_triangle;
 
 typedef struct s_game

@@ -24,7 +24,7 @@ void	Texture::setTextureParameter(GLenum target, GLenum pname, GLint param)
 int	Texture::loadTexture(const char *path, GLenum target, GLint level, GLint internalFormat, GLint border, GLenum format, GLenum type)
 {
 	int width, height, nrChannels;
-		stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char *pixels = stbi_load(path, &width, &height, &nrChannels, 0);
 
 	if (pixels)

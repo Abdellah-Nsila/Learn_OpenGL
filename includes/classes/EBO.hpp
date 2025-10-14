@@ -10,7 +10,7 @@ class EBO
 	public:
 		EBO();
 		~EBO();
-		void	init(GLfloat *indices, GLsizeiptr size);
+		void	init(GLuint *indices, GLsizeiptr size);
 		void	bind();
 		void	unbind();
 		void	deleteBuffer();

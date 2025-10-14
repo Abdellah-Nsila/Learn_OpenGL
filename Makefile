@@ -33,7 +33,7 @@ $(NAME): $(OBJS)
 	$(GPP) $(GPPFLAGS) $(OBJS) -o $(NAME) $(LIBS)
 
 # Compile .cpp files
-%.o: %.cpp	$(INC_DIR)/* $(INC_DIR)/classes/* $(INC_DIR)/utils/*
+%.o: %.cpp
 	$(GPP) $(GPPFLAGS) $(INCLUDES) -c $< -o $@
 
 # Compile .c files (for glad)
