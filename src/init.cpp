@@ -1,4 +1,5 @@
-#include "game.hpp"
+#include "settings.hpp"
+#include "prototypes.hpp"
 
 int setup_setting(t_game *game)
 {

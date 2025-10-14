@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "typedef.hpp"
 
 EBO::EBO()
 {

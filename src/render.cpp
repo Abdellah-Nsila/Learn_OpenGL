@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "prototypes.hpp"
 
 int	render(t_game *game)
 {
