@@ -1,0 +1,5 @@
+./build
+*.d
+*.gch
+*.o
+game

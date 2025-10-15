@@ -1,9 +1,11 @@
 #pragma once
 
-#define WIDTH 1080
-#define HEIGHT 720
-// #define WIDTH 800
-// #define HEIGHT 800
-#define TITLE "GAME"
+// constexpr int WIDTH = 1920;
+// constexpr int HEIGHT = 1080;
+constexpr int WIDTH = 1080;
+constexpr int HEIGHT = 720;
+// constexpr int WIDTH = 800;
+// constexpr int HEIGHT = 800;
+constexpr const char *TITLE = "GAME";
 
 
