@@ -18,6 +18,7 @@ class Shader
 		void	setBool(const std::string &name, GLboolean value) const;  
 		void	setInt(const std::string &name, GLint value) const;   
 		void	setFloat(const std::string &name, GLfloat value) const;
+		void	setMat4(const std::string &name, GLsizei count, glm::mat4 trans) const;
 	private:
 		// Helper for custom constructor
 		int				checkCompileErrors(GLuint shader, std::string type);

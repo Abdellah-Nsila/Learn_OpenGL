@@ -19,8 +19,8 @@ int	setupTexture(Texture *t, const char *path, GLint param, GLenum format)
 	t->bind();
 	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, param);
 	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, param);
-	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	t->loadTexture(path, GL_TEXTURE_2D, 0, GL_RGB, 0, format, GL_UNSIGNED_BYTE);
 	return (EXIT_SUCCESS);
 }
@@ -37,7 +37,7 @@ int	setupPipeline(t_triangle *t)
 	t->vao.LinkAttrib(t->vbo, 2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
 	setupTexture(&(t->texture[0]), "./textures/container.png", GL_CLAMP_TO_EDGE, GL_RGB);
-	setupTexture(&(t->texture[1]), "./textures/awesomeface.png", GL_REPEAT, GL_RGBA);
+	setupTexture(&(t->texture[1]), "./textures/awesomeface.png", GL_CLAMP_TO_EDGE, GL_RGBA);
 	
 	t->vao.unbind();
 	t->vbo.unbind();
@@ -53,7 +53,7 @@ void	destroyPipeline(t_triangle *t)
 	t->texture[1].deleteBuffer();
 }
 
-int	drawTriangle(t_triangle *t)
+int	drawTriangle(t_triangle *t, int idx)
 {
 	glActiveTexture(GL_TEXTURE0);
 	t->texture[0].bind();
@@ -63,6 +63,24 @@ int	drawTriangle(t_triangle *t)
 	t->shader->useProgram();
 	t->shader->setInt("Texture1", 0);
 	t->shader->setInt("Texture2", 1);
+	t->shader->setFloat("Transparent", transparent);
+
+	if (idx == 0)
+	{
+		glm::mat4	trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, static_cast<GLfloat>(glfwGetTime()), glm::vec3(1.0f, 0.0f, 1.0f));
+		t->shader->setMat4("transform", 1, trans);
+	}
+	else if (idx == 1)
+	{
+		GLfloat		scaleAmount = static_cast<GLfloat>(sin(glfwGetTime()));
+		glm::mat4	trans = glm::mat4(1.0f);
+		trans = glm::rotate(trans, static_cast<GLfloat>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 0.0f));
+		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
+		trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+		t->shader->setMat4("transform", 1, trans);
+	}
 
 	t->vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

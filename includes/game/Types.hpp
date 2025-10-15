@@ -7,6 +7,8 @@
 #include "classes/Shader.hpp"
 #include "classes/Texture.hpp"
 
+extern float transparent;
+
 typedef struct s_triangle
 {
 	GLfloat			vertices[9];

@@ -20,6 +20,6 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 // Render
 int				setupPipeline(t_triangle *t);
-int				drawTriangle(t_triangle *t);
+int				drawTriangle(t_triangle *t, int idx);
 int				render(t_game *game);
 void			destroyPipeline(t_triangle *t);
