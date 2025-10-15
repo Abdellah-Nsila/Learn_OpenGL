@@ -1,7 +1,6 @@
 #pragma once
 
-#include "includes.hpp"
-#include "VBO.hpp"
+#include "core/Engine.hpp"
 
 class VAO
 {

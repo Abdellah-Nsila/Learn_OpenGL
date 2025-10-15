@@ -1,6 +1,5 @@
-#include "typedef.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include "../includes/utils/stb_image.h"
+#include "core/Engine.hpp"
+#include "core/stb_image.h"
 
 Texture::Texture()
 {

@@ -1,4 +1,4 @@
-#include "typedef.hpp"
+#include "core/Engine.hpp"
 
 GLfloat	vertices[] = {
     // positions          // colors           // texture coords
@@ -13,24 +13,12 @@ GLuint	indices[] = {
     1, 2, 3  // second triangle
 };
 
-GLfloat vertices1[] = {
-	-0.8f,  0.8f, 0.0f,  // top right
-	-0.8f, -0.2f, 0.0f,  // bottom right
-	-0.2f, -0.2f, 0.0f,  // bottom left
-};
-
-GLfloat vertices2[] = {
-	0.8f,  0.8f, 0.0f,  // top right
-	0.8f, -0.8f, 0.0f,  // bottom right
-	-0.8f, -0.8f, 0.0f,  // bottom left
-};
-
-int	setupTexture(Texture *t, const char *path, GLenum format)
+int	setupTexture(Texture *t, const char *path, GLint param, GLenum format)
 {
 	t->init();
 	t->bind();
-	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, param);
+	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, param);
 	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	t->setTextureParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	t->loadTexture(path, GL_TEXTURE_2D, 0, GL_RGB, 0, format, GL_UNSIGNED_BYTE);
@@ -48,8 +36,8 @@ int	setupPipeline(t_triangle *t)
 	t->vao.LinkAttrib(t->vbo, 1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	t->vao.LinkAttrib(t->vbo, 2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
-	setupTexture(&(t->texture[0]), "./textures/dirt.jpg", GL_RGB);
-	setupTexture(&(t->texture[1]), "./textures/awesomeface.png", GL_RGBA);
+	setupTexture(&(t->texture[0]), "./textures/container.png", GL_CLAMP_TO_EDGE, GL_RGB);
+	setupTexture(&(t->texture[1]), "./textures/awesomeface.png", GL_REPEAT, GL_RGBA);
 	
 	t->vao.unbind();
 	t->vbo.unbind();
@@ -73,8 +61,8 @@ int	drawTriangle(t_triangle *t)
 	t->texture[1].bind();
 
 	t->shader->useProgram();
-	t->shader->setInt("Texture1", 0); // or with shader class
-	t->shader->setInt("Texture2", 1); // or with shader class
+	t->shader->setInt("Texture1", 0);
+	t->shader->setInt("Texture2", 1);
 
 	t->vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
