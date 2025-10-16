@@ -7,7 +7,17 @@
 #include "classes/Shader.hpp"
 #include "classes/Texture.hpp"
 
-extern float transparent;
+extern float			transparent;
+extern glm::vec3		cameraPos;
+extern glm::vec3		cameraFront;
+extern glm::vec3		cameraUp;
+extern GLfloat			cameraSpeed;
+
+extern GLfloat			lastX;
+extern GLfloat			lastY;
+extern float			pitch;
+extern float			yaw;
+extern GLboolean		firstMouse;
 
 typedef struct s_triangle
 {

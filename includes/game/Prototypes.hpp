@@ -9,7 +9,7 @@ int		init_events(t_game game);
 int		init_engine(t_game *game);
 
 // Events
-void	key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void	key_callback(GLFWwindow* window);
 void	mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 // int				vertex_input(t_triangle *t);

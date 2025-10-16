@@ -18,6 +18,8 @@ int	render(t_game *game)
 	{
 		currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
+		cameraSpeed = 2.0f * deltaTime;
+		key_callback(game->window);
 
 		if (secondCounter <= 1) {
 			secondCounter += deltaTime;

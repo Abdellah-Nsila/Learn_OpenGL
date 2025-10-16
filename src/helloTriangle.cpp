@@ -124,13 +124,13 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setInt("Texture1", 0);
 	t->shader->setInt("Texture2", 1);
 	t->shader->setFloat("Transparent", transparent);
-	
-	glm::mat4	view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, static_cast<GLfloat>(cos(glfwGetTime())), static_cast<GLfloat>(sin(glfwGetTime()) - 5.0f)));
-	view = glm::rotate(view, static_cast<GLfloat>(sin(glfwGetTime())), glm::vec3(0.0f, 1.0f, 0.0f));
 
+	glm::mat4		view = glm::mat4(1.0f);
+	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+	//TODO: Move this globaly
 	glm::mat4	projection;
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), static_cast<GLfloat>(WIDTH) / static_cast<GLfloat>(HEIGHT), 0.1f, 100.0f);
 
 	t->shader->setMat4("view", view);
 	t->shader->setMat4("projection", projection);

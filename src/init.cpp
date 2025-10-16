@@ -34,13 +34,13 @@ int	init_window(t_game *game)
 	}
 	glfwMakeContextCurrent(game->window);
 	// glfwSwapInterval(GL_FALSE); // 0 = disable VSync, 1 = enable
+	glfwSetInputMode(game->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
 
 	// Initialize GLAD: this must happen *after* creating the OpenGL context
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cerr << "Failed to initialize GLAD\n";
 		return (EXIT_FAILURE);
 	}
-
 	glViewport(0, 0, game->width, game->height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glEnable(GL_DEPTH_TEST);  
@@ -49,8 +49,7 @@ int	init_window(t_game *game)
 
 int	init_events(t_game *game)
 {
-	glfwSetKeyCallback(game->window, key_callback);
-	// glfwSetCursorPosCallback(game->window, mouse_callback);
+	glfwSetCursorPosCallback(game->window, mouse_callback); 
 	render(game);
 	return (EXIT_SUCCESS);
 }
