@@ -33,6 +33,7 @@ int	init_window(t_game *game)
 		return (EXIT_FAILURE);
 	}
 	glfwMakeContextCurrent(game->window);
+	// glfwSwapInterval(GL_FALSE); // 0 = disable VSync, 1 = enable
 
 	// Initialize GLAD: this must happen *after* creating the OpenGL context
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

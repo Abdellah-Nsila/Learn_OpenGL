@@ -57,12 +57,14 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(GPP) $(GPPFLAGS) $(INCLUDES) $(DFLAGS) -c $< -o $@
 
-# Build the PCH
+# Build the PCH with auto-deps
 $(PCH_FILE): $(PCH_HEADER)
-	$(GPP) $(GPPFLAGS) $(INCLUDES) -x c++-header $< -o $@
+	@echo "Building PCH: $<"
+	$(GPP) $(GPPFLAGS) $(INCLUDES) -x c++-header $(DFLAGS) $< -o $@
 
 # Include dependencies
 -include $(DEPS_CPP) $(DEPS_C)
+# Include dependency tracking for PCH
 -include $(PCH_FILE:.gch=.d)
 
 # Clean objects
