@@ -42,6 +42,7 @@ int	init_window(t_game *game)
 
 	glViewport(0, 0, game->width, game->height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glEnable(GL_DEPTH_TEST);  
 	return (EXIT_SUCCESS);
 }
 

@@ -1,16 +1,61 @@
 #include "core/Engine.hpp"
 
-GLfloat	vertices[] = {
-    // positions          // colors           // texture coords
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-};
+// GLfloat	vertices[] = {
+//     // positions          // colors           // texture coords
+//      0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+//      0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+//     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+//     -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+// };
 
-GLuint	indices[] = {
-	0, 1, 3, // first triangle
-    1, 2, 3  // second triangle
+// GLuint	indices[] = {
+// 	0, 1, 3, // first triangle
+//     1, 2, 3  // second triangle
+// };
+
+GLfloat vertices[] = {
+    // positions          // colors             // tex coords
+    -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f,    0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 0.0f, 1.0f,    0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,   1.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,   0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 1.0f,    0.0f, 1.0f
 };
 
 int	setupTexture(Texture *t, const char *path, GLint param, GLenum format)
@@ -30,8 +75,8 @@ int	setupPipeline(t_triangle *t)
 	t->vao.init();
 	t->vao.bind();
 	t->vbo.init(vertices, sizeof(vertices));
-	t->ebo.init(indices, sizeof(indices));
-	t->ebo.bind();
+	// t->ebo.init(indices, sizeof(indices));
+	// t->ebo.bind();
 	t->vao.LinkAttrib(t->vbo, 0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
 	t->vao.LinkAttrib(t->vbo, 1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 	t->vao.LinkAttrib(t->vbo, 2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
@@ -48,6 +93,7 @@ void	destroyPipeline(t_triangle *t)
 {
 	t->vao.deleteBuffer();
 	t->vbo.deleteBuffer();
+	// t->ebo.deleteBuffer();
 	t->shader->deleteProgram();
 	t->texture[0].deleteBuffer();
 	t->texture[1].deleteBuffer();
@@ -67,7 +113,7 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setFloat("Transparent", transparent);
 	
 	glm::mat4	model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, static_cast<GLfloat>(glfwGetTime()), glm::vec3(0.5f, 1.0f, 0.0f));
 
 	glm::mat4	view = glm::mat4(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -75,11 +121,13 @@ int	drawTriangle(t_triangle *t, int idx)
 	glm::mat4	projection;
 	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-	t->shader->setMat4("model", 1, model);
-	t->shader->setMat4("view", 1, view);
-	t->shader->setMat4("projection", 1, projection);
+	// t->shader->setMat4("model", glm::value_ptr(model));
+	t->shader->setMat4("model", model);
+	t->shader->setMat4("view", view);
+	t->shader->setMat4("projection", projection);
 
 	t->vao.bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 	return (EXIT_SUCCESS);
 }
