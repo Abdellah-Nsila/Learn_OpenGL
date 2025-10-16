@@ -55,6 +55,7 @@ void	destroyPipeline(t_triangle *t)
 
 int	drawTriangle(t_triangle *t, int idx)
 {
+	(void)idx;
 	glActiveTexture(GL_TEXTURE0);
 	t->texture[0].bind();
 	glActiveTexture(GL_TEXTURE1);
@@ -64,23 +65,19 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setInt("Texture1", 0);
 	t->shader->setInt("Texture2", 1);
 	t->shader->setFloat("Transparent", transparent);
+	
+	glm::mat4	model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-	if (idx == 0)
-	{
-		glm::mat4	trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, static_cast<GLfloat>(glfwGetTime()), glm::vec3(1.0f, 0.0f, 1.0f));
-		t->shader->setMat4("transform", 1, trans);
-	}
-	else if (idx == 1)
-	{
-		GLfloat		scaleAmount = static_cast<GLfloat>(sin(glfwGetTime()));
-		glm::mat4	trans = glm::mat4(1.0f);
-		trans = glm::rotate(trans, static_cast<GLfloat>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 0.0f));
-		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
-		trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
-		t->shader->setMat4("transform", 1, trans);
-	}
+	glm::mat4	view = glm::mat4(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+	glm::mat4	projection;
+	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
+	t->shader->setMat4("model", 1, model);
+	t->shader->setMat4("view", 1, view);
+	t->shader->setMat4("projection", 1, projection);
 
 	t->vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
