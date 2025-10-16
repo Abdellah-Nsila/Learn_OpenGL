@@ -49,7 +49,8 @@ int	init_window(t_game *game)
 
 int	init_events(t_game *game)
 {
-	glfwSetCursorPosCallback(game->window, mouse_callback); 
+	glfwSetCursorPosCallback(game->window, mouse_callback);
+	glfwSetScrollCallback(game->window, scroll_callback); 
 	render(game);
 	return (EXIT_SUCCESS);
 }

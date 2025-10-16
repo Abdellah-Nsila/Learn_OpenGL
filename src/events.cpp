@@ -64,3 +64,14 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(direction);
 }
+
+void	scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	(void)window;
+	(void)xoffset;
+    FOV -= (float)yoffset;
+    if (FOV < 1.0f)
+        FOV = 1.0f;
+    if (FOV > 45.0f)
+        FOV = 45.0f; 
+}

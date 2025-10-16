@@ -19,6 +19,8 @@ extern float			pitch;
 extern float			yaw;
 extern GLboolean		firstMouse;
 
+extern GLfloat			FOV;
+
 typedef struct s_triangle
 {
 	GLfloat			vertices[9];
@@ -41,8 +43,9 @@ typedef struct s_triangle
 
 typedef struct s_game
 {
-	int					width;
-	int					height;
+	GLuint				width;
+	GLuint				height;
 	GLFWwindow*			window;
 	std::string			title;
+	Camera				camera;
 }				t_game;

@@ -24,3 +24,4 @@
 #include "classes/EBO.hpp"
 #include "classes/Shader.hpp"
 #include "classes/Texture.hpp"
+#include "classes/Camera.hpp"

@@ -130,7 +130,7 @@ int	drawTriangle(t_triangle *t, int idx)
 
 	//TODO: Move this globaly
 	glm::mat4	projection;
-	projection = glm::perspective(glm::radians(45.0f), static_cast<GLfloat>(WIDTH) / static_cast<GLfloat>(HEIGHT), 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(FOV), static_cast<GLfloat>(WIDTH) / static_cast<GLfloat>(HEIGHT), 0.1f, 100.0f);
 
 	t->shader->setMat4("view", view);
 	t->shader->setMat4("projection", projection);

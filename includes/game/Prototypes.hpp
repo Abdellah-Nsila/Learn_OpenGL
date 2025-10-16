@@ -11,6 +11,7 @@ int		init_engine(t_game *game);
 // Events
 void	key_callback(GLFWwindow* window);
 void	mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void	scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // int				vertex_input(t_triangle *t);
 // int				vertex_input(t_triangle *t, GLfloat vertices[9], size_t size);

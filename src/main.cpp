@@ -12,6 +12,8 @@ GLfloat		pitch = 0.0f;
 GLfloat		yaw = -90.0f;
 GLboolean	firstMouse = GL_TRUE;
 
+GLfloat		FOV = 45.0f;
+
 int	main()
 {
 	t_game	game{};
