@@ -2,9 +2,6 @@
 
 void	key_callback(GLFWwindow* window)
 {
-	GLfloat		cameraSpeed = game.camera.getCameraSpeed();
-	glm::vec3	cameraFront = game.camera.getCameraFront();
-	glm::vec3	cameraUp = game.camera.getCameraUp();
 	// Polygone Mode
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -21,13 +18,13 @@ void	key_callback(GLFWwindow* window)
 	}
 	// Mouve Arround
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		game.camera.setCameraPosition(game.camera.getCameraPosition() + cameraFront * cameraSpeed);
+		game.camera.moveCameraForward();
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		game.camera.setCameraPosition(game.camera.getCameraPosition() - cameraFront * cameraSpeed);
+		game.camera.moveCameraBackward();
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		game.camera.setCameraPosition(game.camera.getCameraPosition() + glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
+		game.camera.moveCameraRight();
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		game.camera.setCameraPosition(game.camera.getCameraPosition() - glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
+		game.camera.moveCameraLeft();
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -40,30 +37,11 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	std::cout << "Mouse moved to: " << xpos << ", " << ypos << std::endl;
 	if (firstMouse)
 	{
-		lastX = xpos;
-		lastY = ypos;
+		game.camera.setLastX(xpos);
+		game.camera.setLastY(ypos);
 		firstMouse = GL_FALSE;
 	}
-
-	GLfloat	xoffset = xpos - lastX;
-	GLfloat	yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-	lastX = xpos;
-	lastY = ypos;
-
-	xoffset *= SENSIVITY;
-	yoffset *= SENSIVITY;
-
-	game.camera.setPitch(game.camera.getPitch() + yoffset);
-	GLfloat	pitch = game.camera.getPitch();
-
-	game.camera.setYaw(game.camera.getYaw() + xoffset);
-	GLfloat	yaw = game.camera.getYaw();
-
-	glm::vec3	direction;
-	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	direction.y = sin(glm::radians(pitch));
-	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	game.camera.setCameraFront(glm::normalize(direction));
+	game.camera.moveCameraDirection(xpos, ypos);
 }
 
 //TODO: Not working

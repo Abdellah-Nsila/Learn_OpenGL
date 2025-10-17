@@ -3,8 +3,8 @@
 int	setup_camera()
 {
 	game.camera = Camera();
-	game.camera.setCameraPosition(glm::vec3(0.0f, 0.0f,  3.0f));
-	game.camera.setCameraFront(glm::vec3(0.0f, 0.0f, -1.0f));
+	game.camera.setCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	game.camera.setCameraDirection(glm::vec3(0.0f, 0.0f, -1.0f));
 	game.camera.setCameraUp(glm::vec3(0.0f, 1.0f,  0.0f));
 	game.camera.setFov(45.0f);
 	game.camera.setWrappingX(89.0f);
@@ -13,6 +13,8 @@ int	setup_camera()
 	game.camera.setAspect(WIDTH / HEIGHT);
 	game.camera.setNear(0.1f);
 	game.camera.setFar(100.0f);
+	game.camera.setLastX(game.width / 2.0);
+	game.camera.setLastY(game.height / 2.0);
 	return (EXIT_SUCCESS);
 }
 
@@ -52,7 +54,8 @@ int	init_window()
 	}
 	glfwMakeContextCurrent(game.window);
 	// glfwSwapInterval(GL_FALSE); // 0 = disable VSync, 1 = enable
-	glfwSetInputMode(game.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+	glfwSetInputMode(game.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 
 	// Initialize GLAD: this must happen *after* creating the OpenGL context
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -67,6 +70,9 @@ int	init_window()
 
 int	init_events()
 {
+	// Prevent first-frame jump when GLFW warps the mouse
+	glfwSetCursorPos(game.window, game.width / 2.0, game.height / 2.0);
+	firstMouse = GL_TRUE; // reset the flag here
 	glfwSetCursorPosCallback(game.window, mouse_callback);
 	glfwSetScrollCallback(game.window, scroll_callback); 
 	render();

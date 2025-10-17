@@ -59,16 +59,16 @@ GLfloat vertices[] = {
 };
 
 glm::vec3 cubePositions[] = {
-    glm::vec3( 0.0f,  0.0f,  0.0f), 
-    glm::vec3( 2.0f,  5.0f, -15.0f), 
+    glm::vec3( 0.0f,  0.0f,  -6.0f), 
+    glm::vec3( 2.0f,  5.0f, -18.0f), 
     glm::vec3(-1.5f, -2.2f, -2.5f),  
-    glm::vec3(-3.8f, -2.0f, -12.3f),  
-    glm::vec3( 2.4f, -0.4f, -3.5f),  
-    glm::vec3(-1.7f,  3.0f, -7.5f),  
-    glm::vec3( 1.3f, -2.0f, -2.5f),  
-    glm::vec3( 1.5f,  2.0f, -2.5f), 
-    glm::vec3( 1.5f,  0.2f, -1.5f), 
-    glm::vec3(-1.3f,  1.0f, -1.5f)  
+    glm::vec3(-3.8f, -2.0f, -14.3f),  
+    glm::vec3( 2.4f, -0.4f, -6.5f),  
+    glm::vec3(-1.7f,  3.0f, -9.5f),  
+    glm::vec3( 1.3f, -2.0f, -5.5f),  
+    glm::vec3( 1.5f,  2.0f, -5.5f), 
+    glm::vec3( 1.5f,  0.2f, -3.5f), 
+    glm::vec3(-1.3f,  1.0f, -3.5f)  
 };
 
 int	setupTexture(Texture *t, const char *path, GLint param, GLenum format)
@@ -127,12 +127,7 @@ int	drawTriangle(t_triangle *t, int idx)
 
 	game.camera.setView();
 
-	// float aspectRatio = (float)WIDTH / HEIGHT;
-	// float orthoWidth = HEIGHT * aspectRatio;
-	// float orthoHeight = HEIGHT;
-	// float zoomFactor = .009;
-	// projection = glm::ortho(-orthoWidth / 2.0, orthoWidth / 2.0, , 20.0, 0.0, 1000.0);
-	// projection = glm::ortho(-orthoWidth * zoomFactor, orthoWidth * zoomFactor, -orthoHeight * zoomFactor, orthoHeight * zoomFactor, 0.0f, 100.0f);
+
 
 	t->shader->setMat4("view", game.camera.getView());
 	t->shader->setMat4("projection", game.camera.getProjection());

@@ -2,16 +2,17 @@
 
 Camera::Camera()
 {
-	this->cameraPosition = glm::vec3(0.0f, 0.0f,  3.0f);
-	this->cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	this->cameraUp = glm::vec3(0.0f, 1.0f,  0.0f);
+	this->cameraPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
+	this->cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	this->cameraSpeed = 0.0f;
 	this->view = glm::mat4(1.0f);
 	this->projection = glm::mat4(1.0f);
+	this->fov = 0.0f;
 	this->pitch = 0.0f;
 	this->yaw = 0.0f;
 	this->roll = 0.0f;
-	this->fov = 0.0f;
+	this->sensivity = 0.1f;
 }
 
 Camera::~Camera()
@@ -24,9 +25,9 @@ const glm::vec3&	Camera::getCameraPosition() const
 	return (this->cameraPosition);
 }
 
-const glm::vec3&	Camera::getCameraFront() const
+const glm::vec3&	Camera::getCameraDirection() const
 {
-	return (this->cameraFront);
+	return (this->cameraDirection);
 }
 
 const glm::vec3&	Camera::getCameraUp() const
@@ -82,6 +83,21 @@ const GLfloat&	Camera::getRoll() const
 	return (this->roll);
 }
 
+const GLfloat&	Camera::getSensivity() const
+{
+	return (this->sensivity);
+}
+
+const GLfloat&	Camera::getLastX() const
+{
+	return (this->lastX);
+}
+
+const GLfloat&	Camera::getLastY() const
+{
+	return (this->lastY);
+}
+
 const glm::mat4&	Camera::getView() const
 {
 	return (this->view);
@@ -98,9 +114,9 @@ void	Camera::setCameraPosition(glm::vec3 cameraPosition)
 	this->cameraPosition = cameraPosition;
 }
 
-void	Camera::setCameraFront(glm::vec3 cameraFront)
+void	Camera::setCameraDirection(glm::vec3 cameraDirection)
 {
-	this->cameraFront = cameraFront;
+	this->cameraDirection = cameraDirection;
 }
 
 void	Camera::setCameraUp(glm::vec3 cameraUp)
@@ -137,7 +153,6 @@ void	Camera::setFar(GLfloat far)
 	this->far = far;
 }
 
-
 void	Camera::setWrappingY(GLfloat wrappingY)
 {
 	this->wrappingY = wrappingY;
@@ -151,20 +166,20 @@ void	Camera::setWrappingX(GLfloat wrappingX)
 void	Camera::setPitch(GLfloat pitch)
 {
 	this->pitch = pitch;
-	if(this->pitch > this->getWrappingY())
-		this->pitch = this->getWrappingY();
-	if(this->pitch < -this->getWrappingY())
-		this->pitch = -this->getWrappingY();
+	if(this->pitch > this->wrappingY)
+		this->pitch = this->wrappingY;
+	if(this->pitch < -this->wrappingY)
+		this->pitch = -this->wrappingY;
 }
 
 void	Camera::setYaw(GLfloat yaw)
 {
 	this->yaw = yaw;
 	//TODOL Optional
-	// if(this->yaw > this->getWrappingX())
-	// 	this->yaw = this->getWrappingX();
-	// if(this->yaw < -this->getWrappingX())
-	// 	this->yaw = -this->getWrappingX();
+	// if(this->yaw > this->wrappingX)
+	// 	this->yaw = this->wrappingX;
+	// if(this->yaw < -this->wrappingX)
+	// 	this->yaw = -this->wrappingX;
 }
 
 void	Camera::setRoll(GLfloat roll)
@@ -172,9 +187,24 @@ void	Camera::setRoll(GLfloat roll)
 	this->roll = roll;
 }
 
+void	Camera::setSensivity(GLfloat sensivity)
+{
+	this->sensivity = sensivity;
+}
+
+void	Camera::setLastX(GLfloat lastX)
+{
+	this->lastX = lastX;
+}
+
+void	Camera::setLastY(GLfloat lastY)
+{
+	this->lastY = lastY;
+}
+
 void	Camera::setView()
 {
-	this->view = glm::lookAt(this->getCameraPosition(), this->getCameraPosition() + this->getCameraFront(), this->getCameraUp());
+	this->view = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraDirection, this->cameraUp);
 }
 
 void	Camera::setProjectionPerspective()
@@ -182,8 +212,80 @@ void	Camera::setProjectionPerspective()
 	this->projection = glm::perspective(this->getFov(), this->getAspect(), this->getNear(), this->getFar());
 }
 
+// ------------------------------------ Move ------------------------------------
+void	Camera::moveCameraForward()
+{
+	this->setCameraPosition(this->cameraPosition + cameraDirection * cameraSpeed);
+}
+
+void	Camera::moveCameraBackward()
+{
+	this->setCameraPosition(this->cameraPosition - cameraDirection * cameraSpeed);
+}
+
+void	Camera::moveCameraRight()
+{
+	this->setCameraPosition(this->cameraPosition + glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed);
+}
+
+void	Camera::moveCameraLeft()
+{
+	this->setCameraPosition(this->cameraPosition - glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed);
+
+}
+
+// ------------------------------------ Mouse ------------------------------------
+
+void	Camera::updateCameraVectors()
+{
+	GLfloat	pitchRadians = glm::radians(this->pitch);
+	GLfloat	yawRadians = glm::radians(this->yaw);
+
+	glm::vec3	direction;
+	direction.x = cos(yawRadians) * cos(pitchRadians);
+	direction.y = sin(pitchRadians);
+	direction.z = sin(yawRadians) * cos(pitchRadians);
+	this->setCameraDirection(glm::normalize(direction));
+
+	// Recalculate Right and Up
+	this->setCameraPosition(glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)));
+	this->setCameraUp(glm::normalize(glm::cross(this->cameraPosition, this->cameraDirection)));
+}
+
+void	Camera::moveCameraDirection(double xpos, double ypos)
+{
+	GLfloat	xoffset = xpos - this->lastX;
+	GLfloat	yoffset = this->lastY - ypos; // reversed since y-coordinates range from bottom to top
+	this->setLastX(xpos);
+	this->setLastY(ypos);
+
+	xoffset *= this->sensivity;
+	yoffset *= this->sensivity;
+
+	this->pitch += yoffset;
+	GLfloat	pitchRadians = glm::radians(this->pitch);
+
+	this->yaw += xoffset;
+	GLfloat	yawRadians = glm::radians(this->yaw);
+
+	glm::vec3	direction;
+	direction.x = cos(yawRadians) * cos(pitchRadians);
+	direction.y = sin(pitchRadians);
+	direction.z = sin(yawRadians) * cos(pitchRadians);
+	this->setCameraDirection(glm::normalize(direction));
+}
+
 // ------------------------------------ Fancy stuff ------------------------------------
 glm::mat4	Camera::createProjectionPerspective(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far)
 {
 	return (glm::perspective(fov, aspect, near, far));
 }
+
+// glm::mat4	Camera::createProjectionOrtho(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far)
+// {	
+// 	float aspectRatio = (float)WIDTH / HEIGHT;
+// 	float orthoWidth = HEIGHT * aspectRatio;
+// 	float orthoHeight = HEIGHT;
+// 	float zoomFactor = .009;
+// 	this->projection = glm::ortho(-orthoWidth * zoomFactor, orthoWidth * zoomFactor, -orthoHeight * zoomFactor, orthoHeight * zoomFactor, 0.0f, 100.0f);
+// }

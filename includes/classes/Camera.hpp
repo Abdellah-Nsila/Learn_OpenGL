@@ -4,11 +4,9 @@ class Camera
 {
 	private:
 		glm::vec3	cameraPosition;
-		glm::vec3	cameraFront;
+		glm::vec3	cameraDirection;
 		glm::vec3	cameraUp;
 		GLfloat		cameraSpeed;
-		glm::mat4	view;
-		glm::mat4	projection;
 		GLfloat		fov;
 		GLfloat		aspect;
 		GLfloat		near;
@@ -18,13 +16,17 @@ class Camera
 		GLfloat		pitch;
 		GLfloat		yaw;
 		GLfloat		roll;
-		//TODO: ADD SENSIVITY
+		GLfloat		sensivity;
+		GLfloat		lastX;
+		GLfloat		lastY;
+		glm::mat4	view;
+		glm::mat4	projection;
 
 	public:
 		Camera();
 		~Camera();
 		const glm::vec3&		getCameraPosition() const;
-		const glm::vec3&		getCameraFront() const;
+		const glm::vec3&		getCameraDirection() const;
 		const glm::vec3&		getCameraUp() const;
 		const GLfloat&			getCameraSpeed() const;
 		const GLfloat&			getFov() const;
@@ -36,11 +38,14 @@ class Camera
 		const GLfloat&			getPitch() const;
 		const GLfloat&			getYaw() const;
 		const GLfloat&			getRoll() const;
+		const GLfloat&			getSensivity() const;
+		const GLfloat&			getLastX() const;
+		const GLfloat&			getLastY() const;
 		const glm::mat4&		getView() const;
 		const glm::mat4&		getProjection() const;
 
 		void	setCameraPosition(glm::vec3 cameraPosition);
-		void	setCameraFront(glm::vec3 cameraFront);
+		void	setCameraDirection(glm::vec3 cameraDirection);
 		void	setCameraUp(glm::vec3 cameraUp);
 		void	setCameraSpeed(GLfloat cameraSpeed);
 		void	setFov(GLfloat fov);
@@ -52,8 +57,19 @@ class Camera
 		void	setPitch(GLfloat pitch);
 		void	setYaw(GLfloat yaw);
 		void	setRoll(GLfloat roll);
+		void	setSensivity(GLfloat sensivity);
+		void	setLastX(GLfloat lastX);
+		void	setLastY(GLfloat lastY);
 		void	setView();
 		void	setProjectionPerspective();
+
+		void	moveCameraForward();
+		void	moveCameraBackward();
+		void	moveCameraRight();
+		void	moveCameraLeft();
+
+		void	updateCameraVectors();
+		void	moveCameraDirection(double xpos, double ypos);
 
 		glm::mat4	createProjectionPerspective(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far);
 
