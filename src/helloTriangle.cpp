@@ -125,15 +125,17 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setInt("Texture2", 1);
 	t->shader->setFloat("Transparent", transparent);
 
-	glm::mat4		view = glm::mat4(1.0f);
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	game.camera.setView();
 
-	//TODO: Move this globaly
-	glm::mat4	projection;
-	projection = glm::perspective(glm::radians(FOV), static_cast<GLfloat>(WIDTH) / static_cast<GLfloat>(HEIGHT), 0.1f, 100.0f);
+	// float aspectRatio = (float)WIDTH / HEIGHT;
+	// float orthoWidth = HEIGHT * aspectRatio;
+	// float orthoHeight = HEIGHT;
+	// float zoomFactor = .009;
+	// projection = glm::ortho(-orthoWidth / 2.0, orthoWidth / 2.0, , 20.0, 0.0, 1000.0);
+	// projection = glm::ortho(-orthoWidth * zoomFactor, orthoWidth * zoomFactor, -orthoHeight * zoomFactor, orthoHeight * zoomFactor, 0.0f, 100.0f);
 
-	t->shader->setMat4("view", view);
-	t->shader->setMat4("projection", projection);
+	t->shader->setMat4("view", game.camera.getView());
+	t->shader->setMat4("projection", game.camera.getProjection());
 
 	t->vao.bind();
 	// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

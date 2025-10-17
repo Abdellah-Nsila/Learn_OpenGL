@@ -8,18 +8,11 @@
 #include "classes/Texture.hpp"
 
 extern float			transparent;
-extern glm::vec3		cameraPos;
-extern glm::vec3		cameraFront;
-extern glm::vec3		cameraUp;
-extern GLfloat			cameraSpeed;
 
 extern GLfloat			lastX;
 extern GLfloat			lastY;
-extern float			pitch;
-extern float			yaw;
-extern GLboolean		firstMouse;
 
-extern GLfloat			FOV;
+extern GLboolean		firstMouse;
 
 typedef struct s_triangle
 {
@@ -43,9 +36,11 @@ typedef struct s_triangle
 
 typedef struct s_game
 {
-	GLuint				width;
-	GLuint				height;
+	GLfloat				width;
+	GLfloat				height;
 	GLFWwindow*			window;
 	std::string			title;
 	Camera				camera;
 }				t_game;
+
+extern t_game			game;

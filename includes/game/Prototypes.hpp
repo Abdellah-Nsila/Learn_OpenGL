@@ -3,10 +3,10 @@
 #include "Types.hpp"
 
 // Init
-int		setup_setting(t_game game);
-int		init_window(t_game game);
-int		init_events(t_game game);
-int		init_engine(t_game *game);
+int		setup_setting();
+int		init_window();
+int		init_events();
+int		init_engine();
 
 // Events
 void	key_callback(GLFWwindow* window);
@@ -22,5 +22,5 @@ void	scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // Render
 int				setupPipeline(t_triangle *t);
 int				drawTriangle(t_triangle *t, int idx);
-int				render(t_game *game);
+int				render();
 void			destroyPipeline(t_triangle *t);

@@ -2,6 +2,9 @@
 
 void	key_callback(GLFWwindow* window)
 {
+	GLfloat		cameraSpeed = game.camera.getCameraSpeed();
+	glm::vec3	cameraFront = game.camera.getCameraFront();
+	glm::vec3	cameraUp = game.camera.getCameraUp();
 	// Polygone Mode
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -18,13 +21,13 @@ void	key_callback(GLFWwindow* window)
 	}
 	// Mouve Arround
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cameraPos += cameraSpeed * cameraFront;
+		game.camera.setCameraPosition(game.camera.getCameraPosition() + cameraFront * cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cameraPos -= cameraSpeed * cameraFront;
+		game.camera.setCameraPosition(game.camera.getCameraPosition() - cameraFront * cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		game.camera.setCameraPosition(game.camera.getCameraPosition() + glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		game.camera.setCameraPosition(game.camera.getCameraPosition() - glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -50,28 +53,23 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	xoffset *= SENSIVITY;
 	yoffset *= SENSIVITY;
 
-	pitch += yoffset;
-	if(pitch > 89.0f)
-		pitch =  89.0f;
-	if(pitch < -89.0f)
-		pitch = -89.0f;
+	game.camera.setPitch(game.camera.getPitch() + yoffset);
+	GLfloat	pitch = game.camera.getPitch();
 
-	yaw += xoffset;
+	game.camera.setYaw(game.camera.getYaw() + xoffset);
+	GLfloat	yaw = game.camera.getYaw();
 
-	glm::vec3 direction;
+	glm::vec3	direction;
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraFront = glm::normalize(direction);
+	game.camera.setCameraFront(glm::normalize(direction));
 }
 
+//TODO: Not working
 void	scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	(void)window;
 	(void)xoffset;
-    FOV -= (float)yoffset;
-    if (FOV < 1.0f)
-        FOV = 1.0f;
-    if (FOV > 45.0f)
-        FOV = 45.0f; 
+	game.camera.setFov(game.camera.getFov() - (GLfloat)yoffset); 
 }

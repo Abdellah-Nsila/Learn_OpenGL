@@ -1,15 +1,33 @@
 #include "core/Engine.hpp"
 
-int setup_setting(t_game *game)
+int	setup_camera()
 {
-	game->width = WIDTH;
-	game->height = HEIGHT;
-	game->window = nullptr;
-	game->title = TITLE;
+	game.camera = Camera();
+	game.camera.setCameraPosition(glm::vec3(0.0f, 0.0f,  3.0f));
+	game.camera.setCameraFront(glm::vec3(0.0f, 0.0f, -1.0f));
+	game.camera.setCameraUp(glm::vec3(0.0f, 1.0f,  0.0f));
+	game.camera.setFov(45.0f);
+	game.camera.setWrappingX(89.0f);
+	game.camera.setWrappingY(89.0f);
+	game.camera.setYaw(-90.0f);
+	game.camera.setAspect(WIDTH / HEIGHT);
+	game.camera.setNear(0.1f);
+	game.camera.setFar(100.0f);
 	return (EXIT_SUCCESS);
 }
 
-int	init_window(t_game *game)
+int setup_setting()
+{
+	game.width = WIDTH;
+	game.height = HEIGHT;
+	game.window = nullptr;
+	game.title = TITLE;
+	// Camera
+	setup_camera();
+	return (EXIT_SUCCESS);
+}
+
+int	init_window()
 {
 	if (!glfwInit()) {
 		std::cerr << "Failed to init GLFW\n";
@@ -26,39 +44,39 @@ int	init_window(t_game *game)
 	#endif
 
 	// (if you want compatibility, you can skip the core profile hint)
-	game->window = glfwCreateWindow(game->width, game->height, game->title.c_str(), NULL, NULL);
-	if (!game->window) {
+	game.window = glfwCreateWindow(static_cast<GLuint>(game.width), static_cast<GLuint>(game.height), game.title.c_str(), NULL, NULL);
+	if (!game.window) {
 		std::cerr << "Failed to create GLFW window\n";
 		glfwTerminate();
 		return (EXIT_FAILURE);
 	}
-	glfwMakeContextCurrent(game->window);
+	glfwMakeContextCurrent(game.window);
 	// glfwSwapInterval(GL_FALSE); // 0 = disable VSync, 1 = enable
-	glfwSetInputMode(game->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+	glfwSetInputMode(game.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
 
 	// Initialize GLAD: this must happen *after* creating the OpenGL context
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cerr << "Failed to initialize GLAD\n";
 		return (EXIT_FAILURE);
 	}
-	glViewport(0, 0, game->width, game->height);
+	glViewport(0, 0, game.width, game.height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glEnable(GL_DEPTH_TEST);  
 	return (EXIT_SUCCESS);
 }
 
-int	init_events(t_game *game)
+int	init_events()
 {
-	glfwSetCursorPosCallback(game->window, mouse_callback);
-	glfwSetScrollCallback(game->window, scroll_callback); 
-	render(game);
+	glfwSetCursorPosCallback(game.window, mouse_callback);
+	glfwSetScrollCallback(game.window, scroll_callback); 
+	render();
 	return (EXIT_SUCCESS);
 }
 
-int	init_engine(t_game *game)
+int	init_engine()
 {
-	setup_setting(game);
-	init_window(game);
-	init_events(game);
+	setup_setting();
+	init_window();
+	init_events();
 	return (EXIT_SUCCESS);
 }

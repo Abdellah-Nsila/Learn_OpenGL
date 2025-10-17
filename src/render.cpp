@@ -1,6 +1,6 @@
 #include "core/Engine.hpp"
 
-int	render(t_game *game)
+int	render()
 {
 	GLfloat lastTime = glfwGetTime();
 	GLfloat currentTime = 0.0f;
@@ -9,17 +9,18 @@ int	render(t_game *game)
 	GLuint tempFps = 0;
 	GLuint fps = 0;
 
+	game.camera.setProjectionPerspective();
 	Shader *ourShader = new Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
 	t_triangle	t[2];
 	setupPipeline(&t[0]);
 	t[0].shader = ourShader;
 
-	while (!glfwWindowShouldClose(game->window))
+	while (!glfwWindowShouldClose(game.window))
 	{
 		currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
-		cameraSpeed = 2.0f * deltaTime;
-		key_callback(game->window);
+		game.camera.setCameraSpeed(2.0f * deltaTime);
+		key_callback(game.window);
 
 		if (secondCounter <= 1) {
 			secondCounter += deltaTime;
@@ -37,7 +38,7 @@ int	render(t_game *game)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		drawTriangle(&t[0], 0);
-		glfwSwapBuffers(game->window);
+		glfwSwapBuffers(game.window);
 		glfwPollEvents();
 		lastTime = currentTime;
 	}
