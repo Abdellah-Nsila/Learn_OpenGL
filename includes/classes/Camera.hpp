@@ -3,23 +3,41 @@
 class Camera
 {
 	private:
+		// Camera X (Right vector)
 		glm::vec3	cameraPosition;
+		// Camera Z (Front vector)
 		glm::vec3	cameraDirection;
+		// Camera Y (Up vector)
 		glm::vec3	cameraUp;
+		// Factor speed (deltatime recommended)
 		GLfloat		cameraSpeed;
+		// Field of view in Y-axis
 		GLfloat		fov;
+		// Aspct Ratio WIDTH / HEIGH
 		GLfloat		aspect;
+		// The closest boundary of the viewable frustum
 		GLfloat		near;
+		// The furthest boundary of the viewable frustum
 		GLfloat		far;
+		// Max angle in X-axis
 		GLfloat		wrappingX;
+		// Max angle in Y-axis
 		GLfloat		wrappingY;
+		// The up-and-down movement
 		GLfloat		pitch;
+		// The left-and-right movement
 		GLfloat		yaw;
+		// The side-to-side wing-tilting movement
 		GLfloat		roll;
+		// Sensivity of mouse movement
 		GLfloat		sensivity;
+		// Last traked mouse X-position
 		GLfloat		lastX;
+		// Last traked mouse Y-position
 		GLfloat		lastY;
+		// View matrix sets up the "camera" by transforming world coordinates into a view coordinate system, placing the camera at the origin and looking down the positive Z-axis. 
 		glm::mat4	view;
+		// Projection matrix takes these camera coordinates and squashes them into a flat image, either using a perspective (realistic) or orthographic (non-realistic) projection
 		glm::mat4	projection;
 
 	public:
@@ -72,6 +90,5 @@ class Camera
 		void	moveCameraDirection(double xpos, double ypos);
 
 		glm::mat4	createProjectionPerspective(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far);
-
 
 };

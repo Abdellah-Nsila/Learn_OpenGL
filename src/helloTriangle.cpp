@@ -125,10 +125,6 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setInt("Texture2", 1);
 	t->shader->setFloat("Transparent", transparent);
 
-	game.camera.setView();
-
-
-
 	t->shader->setMat4("view", game.camera.getView());
 	t->shader->setMat4("projection", game.camera.getProjection());
 

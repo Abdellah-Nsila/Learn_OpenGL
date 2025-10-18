@@ -9,7 +9,10 @@ int	render()
 	GLuint tempFps = 0;
 	GLuint fps = 0;
 
+	// The First default view and projection
+	game.camera.setView();
 	game.camera.setProjectionPerspective();
+	// Setup object to draw
 	Shader *ourShader = new Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
 	t_triangle	t[2];
 	setupPipeline(&t[0]);
@@ -25,11 +28,9 @@ int	render()
 		if (secondCounter <= 1) {
 			secondCounter += deltaTime;
 			tempFps++;
-			// std::cout << "DelataTime: " << deltaTime << std::endl;
 		}
 		else 
 		{
-			//"fps" are the actual fps
 			fps = tempFps;
 			secondCounter = 0;
 			tempFps = 0;

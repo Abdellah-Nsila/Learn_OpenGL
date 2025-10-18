@@ -18,13 +18,25 @@ void	key_callback(GLFWwindow* window)
 	}
 	// Mouve Arround
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
 		game.camera.moveCameraForward();
+		game.camera.setView();
+	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
 		game.camera.moveCameraBackward();
+		game.camera.setView();
+	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
 		game.camera.moveCameraRight();
+		game.camera.setView();
+	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
 		game.camera.moveCameraLeft();
+		game.camera.setView();
+	}
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -42,12 +54,14 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		firstMouse = GL_FALSE;
 	}
 	game.camera.moveCameraDirection(xpos, ypos);
+	game.camera.setView();
 }
 
-//TODO: Not working
 void	scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+	std::cout << "ScroolY: " << yoffset << std::endl;
 	(void)window;
 	(void)xoffset;
-	game.camera.setFov(game.camera.getFov() - (GLfloat)yoffset); 
+	game.camera.setFov(game.camera.getFov() - (GLfloat)yoffset);
+	game.camera.setProjectionPerspective();
 }

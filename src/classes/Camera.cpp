@@ -175,7 +175,7 @@ void	Camera::setPitch(GLfloat pitch)
 void	Camera::setYaw(GLfloat yaw)
 {
 	this->yaw = yaw;
-	//TODOL Optional
+	//TODO: Optional
 	// if(this->yaw > this->wrappingX)
 	// 	this->yaw = this->wrappingX;
 	// if(this->yaw < -this->wrappingX)
@@ -209,33 +209,33 @@ void	Camera::setView()
 
 void	Camera::setProjectionPerspective()
 {
-	this->projection = glm::perspective(this->getFov(), this->getAspect(), this->getNear(), this->getFar());
+	this->projection = glm::perspective(glm::radians(this->fov), this->aspect, this->near, this->far);
 }
 
 // ------------------------------------ Move ------------------------------------
 void	Camera::moveCameraForward()
 {
-	this->setCameraPosition(this->cameraPosition + cameraDirection * cameraSpeed);
+	this->setCameraPosition(this->cameraPosition + this->cameraDirection * this->cameraSpeed);
 }
 
 void	Camera::moveCameraBackward()
 {
-	this->setCameraPosition(this->cameraPosition - cameraDirection * cameraSpeed);
+	this->setCameraPosition(this->cameraPosition - this->cameraDirection * this->cameraSpeed);
 }
 
 void	Camera::moveCameraRight()
 {
-	this->setCameraPosition(this->cameraPosition + glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed);
+	this->setCameraPosition(this->cameraPosition + glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)) * this->cameraSpeed);
 }
 
 void	Camera::moveCameraLeft()
 {
-	this->setCameraPosition(this->cameraPosition - glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed);
+	this->setCameraPosition(this->cameraPosition - glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)) * this->cameraSpeed);
 
 }
 
 // ------------------------------------ Mouse ------------------------------------
-
+//TODO: Decide if you want to use getters and setters inside the class or not ?
 void	Camera::updateCameraVectors()
 {
 	GLfloat	pitchRadians = glm::radians(this->pitch);
