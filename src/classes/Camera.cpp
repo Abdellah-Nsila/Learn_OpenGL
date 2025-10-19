@@ -1,10 +1,11 @@
 #include "core/Engine.hpp"
 
-Camera::Camera()
+Camera::Camera() : worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
 {
 	this->cameraPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-	this->cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-	this->cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	this->cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	this->cameraRight = glm::normalize(glm::cross(this->cameraFront, this->worldUp));
+	this->cameraUp = glm::normalize(glm::cross(this->cameraRight, this->cameraFront));
 	this->cameraSpeed = 0.0f;
 	this->view = glm::mat4(1.0f);
 	this->projection = glm::mat4(1.0f);
@@ -25,14 +26,24 @@ const glm::vec3&	Camera::getCameraPosition() const
 	return (this->cameraPosition);
 }
 
-const glm::vec3&	Camera::getCameraDirection() const
+const glm::vec3&	Camera::getCameraFront() const
 {
-	return (this->cameraDirection);
+	return (this->cameraFront);
 }
 
 const glm::vec3&	Camera::getCameraUp() const
 {
 	return (this->cameraUp);
+}
+
+const glm::vec3&	Camera::getCameraRight() const
+{
+	return (this->cameraRight);
+}
+
+const glm::vec3&	Camera::getWorldUp() const
+{
+	return (this->worldUp);
 }
 
 const GLfloat&	Camera::getCameraSpeed() const
@@ -114,14 +125,19 @@ void	Camera::setCameraPosition(glm::vec3 cameraPosition)
 	this->cameraPosition = cameraPosition;
 }
 
-void	Camera::setCameraDirection(glm::vec3 cameraDirection)
+void	Camera::setCameraFront(glm::vec3 cameraFront)
 {
-	this->cameraDirection = cameraDirection;
+	this->cameraFront = cameraFront;
 }
 
-void	Camera::setCameraUp(glm::vec3 cameraUp)
+void	Camera::setCameraRight()
 {
-	this->cameraUp = cameraUp;
+	this->cameraRight = glm::normalize(glm::cross(this->cameraFront, this->worldUp));
+}
+
+void	Camera::setCameraUp()
+{
+	this->cameraUp = glm::normalize(glm::cross(this->cameraRight, this->cameraFront));
 }
 
 void	Camera::setCameraSpeed(GLfloat cameraSpeed)
@@ -204,7 +220,7 @@ void	Camera::setLastY(GLfloat lastY)
 
 void	Camera::setView()
 {
-	this->view = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraDirection, this->cameraUp);
+	this->view = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
 }
 
 void	Camera::setProjectionPerspective()
@@ -215,44 +231,44 @@ void	Camera::setProjectionPerspective()
 // ------------------------------------ Move ------------------------------------
 void	Camera::moveCameraForward()
 {
-	this->setCameraPosition(this->cameraPosition + this->cameraDirection * this->cameraSpeed);
+	this->setCameraPosition(this->cameraPosition + this->cameraFront * this->cameraSpeed);
 }
 
 void	Camera::moveCameraBackward()
 {
-	this->setCameraPosition(this->cameraPosition - this->cameraDirection * this->cameraSpeed);
+	this->setCameraPosition(this->cameraPosition - this->cameraFront * this->cameraSpeed);
 }
 
 void	Camera::moveCameraRight()
 {
-	this->setCameraPosition(this->cameraPosition + glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)) * this->cameraSpeed);
+	this->setCameraPosition(this->cameraPosition + this->cameraRight * this->cameraSpeed);
+	// this->setCameraPosition(this->cameraPosition + glm::normalize(glm::cross(this->cameraFront, this->cameraUp)) * this->cameraSpeed);
 }
 
 void	Camera::moveCameraLeft()
 {
-	this->setCameraPosition(this->cameraPosition - glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)) * this->cameraSpeed);
-
+	this->setCameraPosition(this->cameraPosition - this->cameraRight * this->cameraSpeed);
 }
 
 // ------------------------------------ Mouse ------------------------------------
 //TODO: Decide if you want to use getters and setters inside the class or not ?
-void	Camera::updateCameraVectors()
+void	Camera::updateCameras()
 {
 	GLfloat	pitchRadians = glm::radians(this->pitch);
 	GLfloat	yawRadians = glm::radians(this->yaw);
 
-	glm::vec3	direction;
-	direction.x = cos(yawRadians) * cos(pitchRadians);
-	direction.y = sin(pitchRadians);
-	direction.z = sin(yawRadians) * cos(pitchRadians);
-	this->setCameraDirection(glm::normalize(direction));
+	glm::vec3	front;
+	front.x = cos(yawRadians) * cos(pitchRadians);
+	front.y = sin(pitchRadians);
+	front.z = sin(yawRadians) * cos(pitchRadians);
+	this->setCameraFront(glm::normalize(front));
 
-	// Recalculate Right and Up
-	this->setCameraPosition(glm::normalize(glm::cross(this->cameraDirection, this->cameraUp)));
-	this->setCameraUp(glm::normalize(glm::cross(this->cameraPosition, this->cameraDirection)));
+	//TODO: Also re-calculate the CameraRight and Up vector (insted of recalculate each move key event)
+	this->setCameraRight();
+	this->setCameraUp();
 }
 
-void	Camera::moveCameraDirection(double xpos, double ypos)
+void	Camera::moveCameraFront(double xpos, double ypos)
 {
 	GLfloat	xoffset = xpos - this->lastX;
 	GLfloat	yoffset = this->lastY - ypos; // reversed since y-coordinates range from bottom to top
@@ -262,21 +278,19 @@ void	Camera::moveCameraDirection(double xpos, double ypos)
 	xoffset *= this->sensivity;
 	yoffset *= this->sensivity;
 
-	this->pitch += yoffset;
-	GLfloat	pitchRadians = glm::radians(this->pitch);
+	this->setYaw(glm::mod(this->yaw + xoffset, 360.0f));
+	this->setPitch(this->pitch + yoffset);
 
-	this->yaw += xoffset;
-	GLfloat	yawRadians = glm::radians(this->yaw);
+	this->updateCameras();
+}
 
-	glm::vec3	direction;
-	direction.x = cos(yawRadians) * cos(pitchRadians);
-	direction.y = sin(pitchRadians);
-	direction.z = sin(yawRadians) * cos(pitchRadians);
-	this->setCameraDirection(glm::normalize(direction));
+glm::mat4	Camera::createView(glm::vec3 cameraPosition, glm::vec3 cameraTarget, glm::vec3 cameraUp)
+{
+	return (glm::lookAt(cameraPosition, cameraTarget, cameraUp));
 }
 
 // ------------------------------------ Fancy stuff ------------------------------------
-glm::mat4	Camera::createProjectionPerspective(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far)
+glm::mat4	Camera::createPerspectiveProjection(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far)
 {
 	return (glm::perspective(fov, aspect, near, far));
 }

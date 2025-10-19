@@ -4,8 +4,9 @@ int	setup_camera()
 {
 	game.camera = Camera();
 	game.camera.setCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	game.camera.setCameraDirection(glm::vec3(0.0f, 0.0f, -1.0f));
-	game.camera.setCameraUp(glm::vec3(0.0f, 1.0f,  0.0f));
+	game.camera.setCameraFront(glm::vec3(0.0f, 0.0f, -1.0f));
+	game.camera.setCameraRight();
+	game.camera.setCameraUp();
 	game.camera.setFov(45.0f);
 	game.camera.setWrappingX(89.0f);
 	game.camera.setWrappingY(89.0f);

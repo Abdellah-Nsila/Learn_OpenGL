@@ -3,12 +3,16 @@
 class Camera
 {
 	private:
-		// Camera X (Right vector)
+		// Camera Origin
 		glm::vec3	cameraPosition;
 		// Camera Z (Front vector)
-		glm::vec3	cameraDirection;
+		glm::vec3	cameraFront;
+		// Camera X (CameraRight vector)
+		glm::vec3	cameraRight;
 		// Camera Y (Up vector)
 		glm::vec3	cameraUp;
+		//TODO: Improving
+		glm::vec3	worldUp; // = (0,1,0)
 		// Factor speed (deltatime recommended)
 		GLfloat		cameraSpeed;
 		// Field of view in Y-axis
@@ -44,8 +48,10 @@ class Camera
 		Camera();
 		~Camera();
 		const glm::vec3&		getCameraPosition() const;
-		const glm::vec3&		getCameraDirection() const;
+		const glm::vec3&		getCameraFront() const;
+		const glm::vec3&		getCameraRight() const;
 		const glm::vec3&		getCameraUp() const;
+		const glm::vec3&		getWorldUp() const;
 		const GLfloat&			getCameraSpeed() const;
 		const GLfloat&			getFov() const;
 		const GLfloat&			getAspect() const;
@@ -63,8 +69,9 @@ class Camera
 		const glm::mat4&		getProjection() const;
 
 		void	setCameraPosition(glm::vec3 cameraPosition);
-		void	setCameraDirection(glm::vec3 cameraDirection);
-		void	setCameraUp(glm::vec3 cameraUp);
+		void	setCameraFront(glm::vec3 cameraFront);
+		void	setCameraRight();
+		void	setCameraUp();
 		void	setCameraSpeed(GLfloat cameraSpeed);
 		void	setFov(GLfloat fov);
 		void	setAspect(GLfloat aspect);
@@ -80,15 +87,16 @@ class Camera
 		void	setLastY(GLfloat lastY);
 		void	setView();
 		void	setProjectionPerspective();
-
+		
 		void	moveCameraForward();
 		void	moveCameraBackward();
 		void	moveCameraRight();
 		void	moveCameraLeft();
-
-		void	updateCameraVectors();
-		void	moveCameraDirection(double xpos, double ypos);
-
-		glm::mat4	createProjectionPerspective(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far);
+		
+		void	updateCameras();
+		void	moveCameraFront(double xpos, double ypos);
+		
+		glm::mat4	createView(glm::vec3 cameraPosition, glm::vec3 cameraFirection, glm::vec3 cameraUp);
+		glm::mat4	createPerspectiveProjection(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far);
 
 };

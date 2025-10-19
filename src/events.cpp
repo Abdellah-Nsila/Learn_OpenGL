@@ -37,6 +37,8 @@ void	key_callback(GLFWwindow* window)
 		game.camera.moveCameraLeft();
 		game.camera.setView();
 	}
+	//TODO: This is for true FPS camera, move it to class and add free or fps camera options
+	// game.camera.setCameraPosition(glm::vec3(game.camera.getCameraPosition().x, 0.0f, game.camera.getCameraPosition().z));
 	// Exit
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -53,7 +55,7 @@ void	mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		game.camera.setLastY(ypos);
 		firstMouse = GL_FALSE;
 	}
-	game.camera.moveCameraDirection(xpos, ypos);
+	game.camera.moveCameraFront(xpos, ypos);
 	game.camera.setView();
 }
 
