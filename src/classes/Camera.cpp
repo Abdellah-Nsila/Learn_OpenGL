@@ -221,6 +221,7 @@ void	Camera::setLastY(GLfloat lastY)
 void	Camera::setView()
 {
 	this->view = glm::lookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
+	// this->view = Camera::createLookAt(this->cameraPosition, this->cameraPosition + this->cameraFront, this->cameraUp);
 }
 
 void	Camera::setProjectionPerspective()
@@ -284,12 +285,43 @@ void	Camera::moveCameraFront(double xpos, double ypos)
 	this->updateCameras();
 }
 
+// ------------------------------------ Fancy stuff ------------------------------------
+glm::mat4	Camera::createLookAt(glm::vec3 position, glm::vec3 target, glm::vec3 up)
+{
+	// Create View axis from
+
+	// Create 
+	glm::vec3	z_axis = glm::normalize(position - target);
+	glm::vec3	x_axis = glm::normalize(glm::cross(glm::normalize(up), z_axis));
+	glm::vec3	y_axis = glm::cross(z_axis, x_axis);
+
+	glm::mat4	translation = glm::mat4(1.0f);
+	translation[3][0] = -position.x;
+	translation[3][1] = -position.y;
+	translation[3][2] = -position.z;
+
+	glm::mat4	rotation = glm::mat4(1.0f);
+	// -----------------------------
+	rotation[0][0] = x_axis.x;
+	rotation[1][0] = x_axis.y;
+	rotation[2][0] = x_axis.z;
+	// -----------------------------
+	rotation[0][1] = y_axis.x;
+	rotation[1][1] = y_axis.y;
+	rotation[2][1] = y_axis.z;
+	// -----------------------------
+	rotation[0][2] = z_axis.x;
+	rotation[1][2] = z_axis.y;
+	rotation[2][2] = z_axis.z;
+
+	return (rotation * translation);
+}
+
 glm::mat4	Camera::createView(glm::vec3 cameraPosition, glm::vec3 cameraTarget, glm::vec3 cameraUp)
 {
 	return (glm::lookAt(cameraPosition, cameraTarget, cameraUp));
 }
 
-// ------------------------------------ Fancy stuff ------------------------------------
 glm::mat4	Camera::createPerspectiveProjection(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far)
 {
 	return (glm::perspective(fov, aspect, near, far));

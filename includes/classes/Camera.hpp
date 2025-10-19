@@ -96,6 +96,7 @@ class Camera
 		void	updateCameras();
 		void	moveCameraFront(double xpos, double ypos);
 		
+		static glm::mat4	createLookAt(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 		glm::mat4	createView(glm::vec3 cameraPosition, glm::vec3 cameraFirection, glm::vec3 cameraUp);
 		glm::mat4	createPerspectiveProjection(GLfloat fov, GLfloat aspect, GLfloat near, GLfloat far);
 
