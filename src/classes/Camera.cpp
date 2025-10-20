@@ -288,18 +288,18 @@ void	Camera::moveCameraFront(double xpos, double ypos)
 // ------------------------------------ Fancy stuff ------------------------------------
 glm::mat4	Camera::createLookAt(glm::vec3 position, glm::vec3 target, glm::vec3 up)
 {
-	// Create View axis from
-
-	// Create 
+	// Create View (x,y,z) axis from
 	glm::vec3	z_axis = glm::normalize(position - target);
 	glm::vec3	x_axis = glm::normalize(glm::cross(glm::normalize(up), z_axis));
 	glm::vec3	y_axis = glm::cross(z_axis, x_axis);
 
+	// Translate matrix pased on new position
 	glm::mat4	translation = glm::mat4(1.0f);
 	translation[3][0] = -position.x;
 	translation[3][1] = -position.y;
 	translation[3][2] = -position.z;
 
+	// Rotation matrix based on nee (x,y,z) axis
 	glm::mat4	rotation = glm::mat4(1.0f);
 	// -----------------------------
 	rotation[0][0] = x_axis.x;
@@ -314,6 +314,7 @@ glm::mat4	Camera::createLookAt(glm::vec3 position, glm::vec3 target, glm::vec3 u
 	rotation[1][2] = z_axis.y;
 	rotation[2][2] = z_axis.z;
 
+	// Final view matrix (using Product PxT translate then rotation)
 	return (rotation * translation);
 }
 

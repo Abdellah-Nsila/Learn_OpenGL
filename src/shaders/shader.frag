@@ -10,8 +10,8 @@ uniform float		Transparent;
 
 void main()
 {
-	FragColor = vec4(Color, 1.0);
+	// FragColor = vec4(Color, 1.0);
 	// FragColor = texture(Texture1, TexCoord) * vec4(Color, 1.0);
 	// FragColor = mix(texture(Texture1, TexCoord), texture(Texture2, TexCoord), 0.2);
 	FragColor = mix(texture(Texture1, TexCoord), texture(Texture2, TexCoord), Transparent);
-};
+}

@@ -15,4 +15,4 @@ void main()
 	gl_Position = projection * view * model * vec4(aLocalPos, 1.0);
 	Color = aColor;
 	TexCoord = aTexCoord;
-};
+}

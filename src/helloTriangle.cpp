@@ -125,6 +125,9 @@ int	drawTriangle(t_triangle *t, int idx)
 	t->shader->setInt("Texture2", 1);
 	t->shader->setFloat("Transparent", transparent);
 
+	// t->shader->setVec2("u_resolution", glm::vec2(game.width, game.height));
+	// t->shader->setFloat("u_time", glfwGetTime());
+
 	t->shader->setMat4("view", game.camera.getView());
 	t->shader->setMat4("projection", game.camera.getProjection());
 
