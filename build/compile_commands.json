@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/gcc  -I/home/abnsila/Desktop/Learn_OpenGL -g -o CMakeFiles/OpenGL_Tuto.dir/src/glad.c.o -c /home/abnsila/Desktop/Learn_OpenGL/src/glad.c",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/glad.c",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/glad.c.o"
+},
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/g++  -I/home/abnsila/Desktop/Learn_OpenGL -g -std=gnu++17 -o CMakeFiles/OpenGL_Tuto.dir/src/config.cpp.o -c /home/abnsila/Desktop/Learn_OpenGL/src/config.cpp",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/config.cpp",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/config.cpp.o"
+},
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/g++  -I/home/abnsila/Desktop/Learn_OpenGL -g -std=gnu++17 -o CMakeFiles/OpenGL_Tuto.dir/src/main.cpp.o -c /home/abnsila/Desktop/Learn_OpenGL/src/main.cpp",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/main.cpp",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/g++  -I/home/abnsila/Desktop/Learn_OpenGL -g -std=gnu++17 -o CMakeFiles/OpenGL_Tuto.dir/src/Shader.cpp.o -c /home/abnsila/Desktop/Learn_OpenGL/src/Shader.cpp",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/Shader.cpp",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/Shader.cpp.o"
+},
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/g++  -I/home/abnsila/Desktop/Learn_OpenGL -g -std=gnu++17 -o CMakeFiles/OpenGL_Tuto.dir/src/Material.cpp.o -c /home/abnsila/Desktop/Learn_OpenGL/src/Material.cpp",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/Material.cpp",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/Material.cpp.o"
+},
+{
+  "directory": "/home/abnsila/Desktop/Learn_OpenGL/build",
+  "command": "/usr/bin/g++  -I/home/abnsila/Desktop/Learn_OpenGL -g -std=gnu++17 -o CMakeFiles/OpenGL_Tuto.dir/src/Triangle_mesh.cpp.o -c /home/abnsila/Desktop/Learn_OpenGL/src/Triangle_mesh.cpp",
+  "file": "/home/abnsila/Desktop/Learn_OpenGL/src/Triangle_mesh.cpp",
+  "output": "CMakeFiles/OpenGL_Tuto.dir/src/Triangle_mesh.cpp.o"
+}
+]
