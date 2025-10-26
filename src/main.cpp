@@ -39,6 +39,11 @@ int	main()
 	Shader 			*shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
 	TriangleMesh	*triangle = new TriangleMesh();
 	Material		*material = new Material("textures/dirt.png");
+	Material		*mask = new Material("textures/mask.jpg");
+
+	shader->useProgram();
+	shader->setInt("material", 0);
+	shader->setInt("mask", 1);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -46,7 +51,8 @@ int	main()
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader->useProgram();
-		material->use(GL_TEXTURE0);
+		material->use(0);
+		mask->use(1);
 		triangle->draw();
 
 		glfwSwapBuffers(window);
@@ -56,6 +62,7 @@ int	main()
 	delete shader;
 	delete triangle;
 	delete material;
+	delete mask;
 	
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -13,7 +13,7 @@ class Material
 		void	unbind();
 		void	deleteBuffer();
 		void	setMateria();
-		void	use(GLenum textureUnit);
+		void	use(int textureUnit);
 	
 	private:
 		unsigned int	ID;

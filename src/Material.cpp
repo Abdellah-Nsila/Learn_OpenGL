@@ -83,17 +83,17 @@ void	Material::setMateria()
 	this->loadTexture(GL_TEXTURE_2D, 0, GL_RGB, 0, GL_UNSIGNED_BYTE);
 }
 
-void	Material::use(GLenum textureUnit)
+void	Material::use(int textureUnit)
 {
-	GLint	activeTextureUnit;
+	GLint	maxTextureUnit;
 
-    glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTextureUnit);
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnit);
 	
-	if (textureUnit < 0 || textureUnit > activeTextureUnit)
+	if (textureUnit < 0 || textureUnit > maxTextureUnit)
 	{
 		std::cout << "incorrect texture unit: " << textureUnit
-		<< "Max active Texture Unit is: " << activeTextureUnit << std::endl;
+		<< " Max active Texture Unit is: " << maxTextureUnit << std::endl;
 	} 
-	glActiveTexture(textureUnit);
+	glActiveTexture(GL_TEXTURE0 + textureUnit);
 	this->bind();
 }

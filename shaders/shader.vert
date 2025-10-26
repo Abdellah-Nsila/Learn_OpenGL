@@ -18,5 +18,5 @@ void main()
 {
     gl_Position = vec4(vertexPos, 1.0f);
 	fragmentColor = vertexColors[colorIndex];
-	fragmentTexCoord = vertexPos.xy;
+	fragmentTexCoord = 0.5f * (vertexPos.xy + vec2(1.0f));
 }
