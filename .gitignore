@@ -1,4 +1,4 @@
-./build
+build
 *.d
 *.gch
 *.o

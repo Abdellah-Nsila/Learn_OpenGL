@@ -2,6 +2,8 @@
 #include "Shader.hpp"
 #include "Triangle_mesh.hpp"
 #include "Material.hpp"
+#include "linear_algebros.h"
+
 
 int	main()
 {
@@ -44,6 +46,10 @@ int	main()
 	shader->useProgram();
 	shader->setInt("material", 0);
 	shader->setInt("mask", 1);
+	// Transformation
+	t_vec3	translation = {0.2f, 0.5f, 0.0f};
+	t_mat4	model = createMatrixTransform(translation);
+	shader->setMat4("model", model);
 
 	while (!glfwWindowShouldClose(window))
 	{

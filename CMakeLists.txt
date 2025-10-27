@@ -18,6 +18,8 @@ add_executable(OpenGL_Tuto
 	src/stb_image.h
 	src/config.h
 	src/config.cpp
+	src/linear_algebros.h
+	src/linear_algebros.cpp
 	src/main.cpp
 	src/Shader.hpp
 	src/Shader.cpp
