@@ -4,7 +4,6 @@
 #include "Material.hpp"
 #include "linear_algebros.h"
 
-
 int	main()
 {
 	GLFWwindow	*window;
@@ -47,13 +46,19 @@ int	main()
 	shader->setInt("material", 0);
 	shader->setInt("mask", 1);
 	// Transformation
-	t_vec3	translation = {0.2f, 0.5f, 0.0f};
-	t_mat4	model = createMatrixTransform(translation);
-	shader->setMat4("model", model);
+	// t_vec3	translation = {0.2f, 0.5f, 0.0f};
+	// t_mat4	model = createMatrixTransform(translation);
+	t_vec3	cameraPos = {-0.4f, 0.0f, 0.2f};
+	t_vec3	cameraTarget = {0.0f, 0.0f, 0.0f};
+	t_mat4	view = create_look_at(cameraPos, cameraTarget);
+	shader->setMat4("view", view);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+
+		t_mat4	model = create_z_rotation(50.0f * glfwGetTime());
+		shader->setMat4("model", model);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader->useProgram();
