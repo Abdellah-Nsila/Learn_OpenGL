@@ -93,7 +93,10 @@ void	Material::use(int textureUnit)
 	{
 		std::cout << "incorrect texture unit: " << textureUnit
 		<< " Max active Texture Unit is: " << maxTextureUnit << std::endl;
-	} 
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	this->bind();
+	}
+	if (ID)
+	{
+		glActiveTexture(GL_TEXTURE0 + textureUnit);
+		this->bind();
+	}
 }

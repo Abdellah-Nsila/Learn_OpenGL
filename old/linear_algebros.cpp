@@ -191,3 +191,31 @@ t_mat4	create_look_at(t_vec3 from, t_vec3 to)
 
 	return (matrix);
 }
+
+t_mat4	create_prespective_projection(float fovy, float aspect, float near, float far)
+{
+	float	tanHalfFovy = tan((fovy * (PI / 180.0f)) / 2.0f);
+	t_mat4	matrix;
+
+	matrix.entries[0] = 1.0f / (aspect * tanHalfFovy);
+	matrix.entries[1] = 0.0f;
+	matrix.entries[2] = 0.0f;
+	matrix.entries[3] = 0.0f;
+
+	matrix.entries[4] = 0.0f;
+	matrix.entries[5] = 1.0f / tanHalfFovy;
+	matrix.entries[6] = 0.0f;
+	matrix.entries[7] = 0.0f;
+
+	matrix.entries[8] = 0.0f;
+	matrix.entries[9] = 0.0f;
+	matrix.entries[10] = -(far - near) / (far + near);
+	matrix.entries[11] = -1.0f;
+
+	matrix.entries[12] = 0.0f;
+	matrix.entries[13] = 0.0f;
+	matrix.entries[14] = -(2.0f * far * near) / (far - near);
+	matrix.entries[15] = 1.0f;
+
+	return (matrix);
+}

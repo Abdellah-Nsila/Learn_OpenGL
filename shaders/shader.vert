@@ -15,10 +15,11 @@ const vec3 vertexColors[4] = vec3[](
 
 uniform mat4 model;
 uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
-    gl_Position = view * model * vec4(vertexPos, 1.0f);
+    gl_Position = projection * view * model * vec4(vertexPos, 1.0f);
 	fragmentColor = vertexColors[colorIndex];
 	fragmentTexCoord = 0.5f * (vertexPos.xy + vec2(1.0f));
 }

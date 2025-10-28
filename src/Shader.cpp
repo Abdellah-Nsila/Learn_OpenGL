@@ -1,6 +1,5 @@
 #include "config.h"
 #include "Shader.hpp"
-#include "linear_algebros.h"
 
 Shader::Shader()
 {
@@ -201,8 +200,8 @@ void	Shader::setMat3(const std::string &name, const glm::mat3 &mat) const
 // 	GLuint	uniformLocation = glGetUniformLocation(ID, name.c_str());
 // 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &mat[0][0]);
 // }
-void	Shader::setMat4(const std::string &name, const t_mat4 mat) const
+void	Shader::setMat4(const std::string &name, const glm::f32 *mat) const
 {
 	GLuint	uniformLocation = glGetUniformLocation(ID, name.c_str());
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, mat.entries);
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, mat);
 }

@@ -2,7 +2,12 @@
 #include "Shader.hpp"
 #include "Triangle_mesh.hpp"
 #include "Material.hpp"
-#include "linear_algebros.h"
+
+int	glfwSetFramebufferSizeCallback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+	return (0);
+};
 
 int	main()
 {
@@ -35,6 +40,7 @@ int	main()
 	GLsizei	w,h;
 	glfwGetFramebufferSize(window, &w, &h);
 	glViewport(0, 0, w, h);
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 
 	Shader 			*shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
@@ -45,22 +51,26 @@ int	main()
 	shader->useProgram();
 	shader->setInt("material", 0);
 	shader->setInt("mask", 1);
-	// Transformation
-	// t_vec3	translation = {0.2f, 0.5f, 0.0f};
-	// t_mat4	model = createMatrixTransform(translation);
-	t_vec3	cameraPos = {-0.4f, 0.0f, 0.2f};
-	t_vec3	cameraTarget = {0.0f, 0.0f, 0.0f};
-	t_mat4	view = create_look_at(cameraPos, cameraTarget);
-	shader->setMat4("view", view);
+
+	glm::vec3	cameraPos = {-5.0f, 0.0f, 3.0f};
+	glm::vec3	cameraTarget = {0.0f, 0.0f, 0.0f};
+	glm::vec3	up = {0.0f, 1.0f, 0.0f};
+	glm::mat4	view = glm::lookAt(cameraPos, cameraTarget, up);
+	shader->setMat4("view", glm::value_ptr(view));
+
+	glm::mat4	projection = glm::perspective(glm::radians(45.0f), 1080.0f / 720.0f, 0.1f, 10.0f);
+	shader->setMat4("projection", glm::value_ptr(projection));
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
-		t_mat4	model = create_z_rotation(50.0f * glfwGetTime());
-		shader->setMat4("model", model);
+		glm::mat4	model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(-0.2f, 0.4f, 0.0f));
+		model = glm::rotate(model, static_cast<GLfloat>(glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+		shader->setMat4("model", glm::value_ptr(model));
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		shader->useProgram();
 		material->use(0);
 		mask->use(1);

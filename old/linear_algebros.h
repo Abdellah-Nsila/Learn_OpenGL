@@ -28,3 +28,5 @@ t_vec3	normalize(t_vec3 v);
 t_vec3	cross(t_vec3 u, t_vec3 v);
 
 t_mat4	create_look_at(t_vec3 from, t_vec3 to);
+
+t_mat4	create_prespective_projection(float fovy, float aspect, float near, float far);
