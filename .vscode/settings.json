@@ -3,6 +3,6 @@
 		"cmath": "cpp",
 		"memory": "cpp",
 		"fstream": "cpp",
-		"sstream": "cpp"
+		"sstream": "cpp",
 	},
 }

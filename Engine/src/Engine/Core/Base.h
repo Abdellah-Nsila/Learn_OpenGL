@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PlatformDetection.h"
-
 #include <memory>
 
 #ifdef ENGINE_DEBUG

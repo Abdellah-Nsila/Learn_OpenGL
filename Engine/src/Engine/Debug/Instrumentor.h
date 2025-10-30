@@ -11,7 +11,8 @@
 #include <mutex>
 #include <sstream>
 
-namespace Engine {
+namespace Engine
+{
 
 	using FloatingPointMicroseconds = std::chrono::duration<double, std::micro>;
 
