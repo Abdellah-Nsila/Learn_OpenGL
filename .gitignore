@@ -3,3 +3,4 @@ build
 *.gch
 *.o
 game
+_old
